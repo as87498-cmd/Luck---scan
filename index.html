@@ -7,83 +7,76 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
-        
         :root { --gold: #FFD700; --neon: #00f2ff; --dark: #02050a; }
         body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; touch-action: none; }
 
-        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; transition: 0.5s; }
+        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; background: var(--dark); }
+        .active { display: flex !important; }
 
         /* --- PREMIUM 3D LOGIN --- */
-        #login-screen { display: flex; background: radial-gradient(circle, #0a1f1a 0%, #02050a 100%); }
+        #login-screen { background: radial-gradient(circle, #0a2e1e 0%, #02050a 100%); }
         .glass-box { 
             background: rgba(255, 255, 255, 0.05); 
             padding: 40px 30px; 
             border-radius: 40px; 
-            border: 1px solid rgba(0, 242, 255, 0.3); 
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1), inset 0 0 20px rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 242, 255, 0.4); 
+            box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
             width: 85%; max-width: 360px;
             text-align: center;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
         }
-        .logo-glow { font-size: 42px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); letter-spacing: 3px; }
+        .logo-glow { font-size: 40px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 5px; }
 
         /* --- 3D AD CARDS --- */
         .ad-card-3d { 
             width: 80%; padding: 30px; border-radius: 30px; 
-            transform-style: preserve-3d; transform: perspective(1000px) rotateX(10deg);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8); text-align: left;
+            transform: perspective(1000px) rotateX(10deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
         }
-        #egg-planet-screen { background: #000; }
         .egg-card { background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%); color: #000; border: 4px solid var(--gold); }
-        
-        /* --- GAME HUB --- */
+        .shivay-ad { background: linear-gradient(145deg, #004d40, #00241a); border: 3px solid var(--gold); color: var(--gold); }
+
+        /* --- HUB & BUTTONS --- */
         .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 90%; }
         .game-btn { 
             background: rgba(255,255,255,0.05); border: 1px solid var(--neon); 
-            padding: 25px 10px; border-radius: 25px; cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2); transition: 0.3s;
+            padding: 25px 10px; border-radius: 25px; cursor: pointer; text-align:center;
         }
-        .game-btn:active { transform: scale(0.9); box-shadow: 0 0 30px var(--neon); }
-
-        /* --- SHIVAY FINANCE AD --- */
-        .shivay-ad { background: linear-gradient(145deg, #004d40, #00241a); border: 3px solid var(--gold); color: var(--gold); }
-
-        /* --- UI ELEMENTS --- */
         .input-premium { 
             width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; border: 1px solid #333;
-            background: rgba(0,0,0,0.5); color: #fff; font-family: 'Orbitron'; box-sizing: border-box;
+            background: rgba(0,0,0,0.7); color: #fff; font-family: 'Orbitron'; box-sizing: border-box; outline: none;
         }
         .btn-action { 
             width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900;
-            border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 10px 0 #b8860b;
+            border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 #b8860b; font-size: 16px;
         }
-        .btn-action:active { transform: translateY(5px); box-shadow: 0 5px 0 #b8860b; }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #b8860b; }
 
         canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 30px; border: 2px solid #333; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="screen">
+    <div id="login-screen" class="screen active">
         <div class="glass-box">
             <div class="logo-glow">LUCK LOOP</div>
-            <p style="color: #00f2ff; font-size: 10px; letter-spacing: 2px;">PREMIUM GAMING HUB</p>
+            <p style="color: var(--neon); font-size: 10px; letter-spacing: 2px; margin-bottom: 20px;">PREMIUM HUB</p>
             <input type="text" id="custName" class="input-premium" placeholder="NAME">
             <input type="tel" id="custMobile" class="input-premium" placeholder="WHATSAPP NO">
-            <button class="btn-action" onclick="showEggIntro()">ENTER ARENA</button>
+            <button class="btn-action" id="enterBtn" onclick="goToIntro()">ENTER ARENA</button>
         </div>
     </div>
 
     <div id="egg-planet-screen" class="screen">
         <div class="ad-card-3d egg-card">
-            <h1 style="font-size: 35px; margin:0;">EGG PLANET</h1>
-            <p style="font-size: 14px;">Special Partner | Fresh & Healthy</p>
-            <div style="margin-top:20px; font-weight:900; color:#d32f2f;">Loading Mythic Engine...</div>
+            <h1 style="font-size: 32px; margin:0;">EGG PLANET</h1>
+            <p style="font-size: 14px;">Partner | Fresh & Healthy</p>
+            <div style="margin-top:20px; font-weight:900; color:#d32f2f;">Loading Mythic Bow...</div>
         </div>
     </div>
 
     <div id="hub-screen" class="screen">
-        <h2 style="color: var(--gold); margin-bottom:30px;">SELECT YOUR MISSION</h2>
+        <h2 style="color: var(--gold); margin-bottom:30px;">SELECT MISSION</h2>
         <div class="hub-grid">
             <div class="game-btn" onclick="startGame('archery')">
                 <span style="font-size:40px;">🏹</span><br><b>ARCHERY</b>
@@ -100,19 +93,19 @@
     </div>
 
     <div id="ad-screen" class="screen">
-        <p style="color:#aaa;">VERIFYING SCORE: <span id="timer">5</span>s</p>
+        <p style="color:#aaa;">GENERATING COUPON: <span id="timer">5</span>s</p>
         <div class="ad-card-3d shivay-ad">
-            <h1>SHIVAY FINANCE</h1>
-            <p>✔ FASTEST LOANS</p>
-            <p>✔ ZERO PROCESSING FEE</p>
+            <h1 style="margin:0;">SHIVAY FINANCE</h1>
+            <p>✔ INSTANT LOANS</p>
+            <p>✔ LOWEST INTEREST</p>
             <p style="background:var(--gold); color:#000; text-align:center; border-radius:5px; padding:5px;">TRUSTED PARTNER</p>
         </div>
     </div>
 
     <div id="result-screen" class="screen">
-        <h1 style="color:var(--gold); font-size:45px;">VICTORY</h1>
+        <h1 style="color:var(--gold); font-size:40px;">VICTORY</h1>
         <p id="final-msg" style="font-size:22px;"></p>
-        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">CLAIM COUPON</button>
+        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">GET COUPON</button>
     </div>
 
 <script>
@@ -120,27 +113,31 @@
     const ctx = canvas.getContext('2d');
     let name, mobile, score = 0, gameActive = false, mode = '';
     
-    // Gameplay Vars
-    let targetY = 100, targetDir = 1;
-    let arrowX = 80, isShooting = false;
+    // Movement Vars
+    let targetY = 100, targetDir = 1, arrowX = 80, isShooting = false;
 
-    function showEggIntro() {
+    function goToIntro() {
         name = document.getElementById('custName').value;
         mobile = document.getElementById('custMobile').value;
+        
         if (name && mobile.length === 10) {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('egg-planet-screen').style.display = 'flex';
+            // Screen Switch
+            document.getElementById('login-screen').classList.remove('active');
+            document.getElementById('egg-planet-screen').classList.add('active');
+            
             setTimeout(() => {
-                document.getElementById('egg-planet-screen').style.display = 'none';
-                document.getElementById('hub-screen').style.display = 'flex';
+                document.getElementById('egg-planet-screen').classList.remove('active');
+                document.getElementById('hub-screen').classList.add('active');
             }, 5000);
-        } else { alert("Correct Details Enter Karein!"); }
+        } else {
+            alert("Please enter Name and 10-digit Mobile Number!");
+        }
     }
 
     function startGame(m) {
         mode = m; score = 0;
-        document.getElementById('hub-screen').style.display = 'none';
-        document.getElementById('game-area').style.display = 'flex';
+        document.getElementById('hub-screen').classList.remove('active');
+        document.getElementById('game-area').classList.add('active');
         canvas.style.display = 'block';
         canvas.width = 340; canvas.height = 460;
         gameActive = true;
@@ -152,7 +149,7 @@
         ctx.clearRect(0,0,canvas.width, canvas.height);
 
         if(mode === 'archery') {
-            // Realistic 3D Target
+            // 3D Shaded Target
             targetY += 3 * targetDir;
             if(targetY > 380 || targetY < 80) targetDir *= -1;
             for(let i=0; i<4; i++) {
@@ -160,37 +157,36 @@
                 ctx.beginPath(); ctx.ellipse(280, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2); ctx.fill();
             }
 
-            // MYTHIC BOW (As per image)
+            // MYTHIC CURVED BOW (Beige Gold)
             ctx.strokeStyle = "#e3cfa8"; ctx.lineWidth = 6;
             ctx.beginPath();
-            ctx.moveTo(40, targetY-70);
-            ctx.bezierCurveTo(90, targetY-60, 90, targetY+60, 40, targetY+70);
+            ctx.moveTo(40, 130);
+            ctx.bezierCurveTo(90, 150, 90, 310, 40, 330);
             ctx.stroke();
-            // String
-            ctx.strokeStyle = "rgba(255,255,255,0.3)"; ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(40, targetY-70); ctx.lineTo(40, targetY+70); ctx.stroke();
 
             if(isShooting) {
                 arrowX += 20;
-                if(arrowX > 250 && Math.abs(200 - targetY) < 40) { // Simple hit check
+                if(arrowX > 250 && Math.abs(230 - targetY) < 50) { 
                     score += 5; arrowX = 80; isShooting = false;
                     if(score >= 10) triggerAd();
                 } else if(arrowX > 340) { arrowX = 80; isShooting = false; }
             }
-            ctx.fillStyle = "gold"; ctx.fillRect(arrowX-40, 198, 40, 4);
+            ctx.fillStyle = "gold"; ctx.fillRect(arrowX-40, 228, 40, 4); // Arrow
         }
-
         document.getElementById('scoreVal').innerText = score;
         requestAnimationFrame(update);
     }
 
+    // Input Handling
+    window.addEventListener('touchstart', (e) => { 
+        if(gameActive) { e.preventDefault(); isShooting = true; }
+    }, {passive: false});
     window.addEventListener('mousedown', () => { if(gameActive) isShooting = true; });
-    window.addEventListener('touchstart', (e) => { e.preventDefault(); if(gameActive) isShooting = true; });
 
     function triggerAd() {
         gameActive = false;
-        document.getElementById('game-area').style.display = 'none';
-        document.getElementById('ad-screen').style.display = 'flex';
+        document.getElementById('game-area').classList.remove('active');
+        document.getElementById('ad-screen').classList.add('active');
         let t = 5;
         let timer = setInterval(() => {
             t--; document.getElementById('timer').innerText = t;
@@ -199,8 +195,8 @@
     }
 
     function showFinal() {
-        document.getElementById('ad-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'flex';
+        document.getElementById('ad-screen').classList.remove('active');
+        document.getElementById('result-screen').classList.add('active');
         document.getElementById('final-msg').innerText = `CONGRATS! YOU WON ${score}% OFF`;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
@@ -210,4 +206,4 @@
     }
 </script>
 </body>
-  </html>
+</html>
