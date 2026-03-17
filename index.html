@@ -3,62 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Luck Loop Ultra Hub</title>
+    <title>Luck Loop Hub Pro</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
         :root { --gold: #FFD700; --dark: #02050a; --neon: #00f2ff; }
-        body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; touch-action: none; }
-        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; background: var(--dark); }
+        body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; }
+
+        /* Screen Management */
+        .screen { position: fixed; top:0; left:0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
         .active { display: flex !important; }
-        .glass-box { background: rgba(255, 255, 255, 0.05); padding: 40px 30px; border-radius: 40px; border: 1px solid var(--gold); box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); width: 85%; max-width: 360px; text-align: center; backdrop-filter: blur(20px); }
-        .poster-img { width: 90%; max-width: 350px; border-radius: 20px; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(0,0,0,0.9); }
-        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 90%; }
-        .game-btn { background: rgba(255,255,255,0.05); border: 2px solid var(--neon); padding: 25px 5px; border-radius: 20px; text-align:center; cursor: pointer; }
-        .input-premium { width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; background: rgba(0,0,0,0.7); color: #fff; border: 1px solid #444; font-family: 'Orbitron'; box-sizing: border-box; }
-        .btn-action { width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 #b8860b; }
-        canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 30px; border: 2px solid #444; }
+
+        /* 3D Glass Box - Optimized for Touch */
+        .glass-box { 
+            background: rgba(255, 255, 255, 0.08); 
+            padding: 35px 25px; 
+            border-radius: 30px; 
+            border: 2px solid var(--gold); 
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            width: 85%; max-width: 350px; 
+            text-align: center;
+            pointer-events: auto; /* Ensures touch works */
+        }
+
+        .poster-img { width: 85%; max-width: 320px; border-radius: 15px; border: 3px solid var(--gold); box-shadow: 0 0 30px #000; }
+
+        /* Buttons & Hub */
+        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; }
+        .game-btn { background: rgba(255,255,255,0.05); border: 2px solid var(--neon); padding: 20px 10px; border-radius: 20px; cursor: pointer; }
+
+        input { 
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
+            background: rgba(0,0,0,0.8); color: #fff; border: 1px solid #555; 
+            font-family: 'Orbitron'; box-sizing: border-box; font-size: 14px;
+        }
+
+        .btn-action { 
+            width: 100%; padding: 16px; background: var(--gold); color: #000; 
+            font-weight: 900; border: none; border-radius: 12px; cursor: pointer; 
+            box-shadow: 0 6px 0 #b8860b; font-size: 16px; margin-top: 10px;
+        }
+        .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #b8860b; }
+
+        canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 20px; border: 2px solid #444; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="screen active">
         <div class="glass-box">
-            <h1 style="color: var(--gold); text-shadow: 0 0 20px var(--gold); margin:0;">LUCK LOOP</h1>
-            <p style="font-size: 10px; letter-spacing: 3px; color: var(--neon); margin-bottom: 20px;">ULTRA 3D HUB</p>
-            <input type="text" id="custName" class="input-premium" placeholder="NAME">
-            <input type="tel" id="custMobile" class="input-premium" placeholder="WHATSAPP NO">
-            <button class="btn-action" onclick="showPartnerIntro()">ENTER ARENA</button>
+            <h1 style="color: var(--gold); margin:0; font-size: 30px;">LUCK LOOP</h1>
+            <p style="font-size: 9px; letter-spacing: 2px; color: var(--neon); margin-bottom: 15px;">PREMIUM 3D HUB</p>
+            <input type="text" id="custName" placeholder="ENTER NAME">
+            <input type="tel" id="custMobile" placeholder="MOBILE NO">
+            <button class="btn-action" onclick="goToIntro()">ENTER ARENA</button>
         </div>
     </div>
 
     <div id="egg-planet-screen" class="screen">
-        <h2 style="color: var(--gold); margin-bottom: 20px;">OUR PARTNER</h2>
+        <h2 style="color: var(--gold); margin-bottom: 15px;">PARTNER</h2>
         <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster-img">
-        <p style="margin-top:20px; font-weight:bold; color: var(--neon);">Initializing Games...</p>
+        <p style="margin-top:15px; font-weight:bold; color: var(--neon);">Loading Hub...</p>
     </div>
 
     <div id="hub-screen" class="screen">
-        <h2 style="color: var(--gold); margin-bottom:30px;">SELECT MISSION</h2>
+        <h2 style="color: var(--gold); margin-bottom:20px;">CHOOSE GAME</h2>
         <div class="hub-grid">
-            <div class="game-btn" onclick="initGame('archery')">🏹<br><b>ARCHERY</b></div>
-            <div class="game-btn" onclick="initGame('jump')">🚀<br><b>NEON JUMP</b></div>
+            <div class="game-btn" onclick="startGame('archery')">🏹<br><b>ARCHERY</b></div>
+            <div class="game-btn" onclick="startGame('jump')">🚀<br><b>JUMP</b></div>
         </div>
     </div>
 
     <div id="game-area" class="screen">
-        <div style="font-size: 24px; color: var(--gold); margin-bottom:15px; font-weight:900;">SCORE: <span id="scoreVal">0</span>%</div>
+        <div style="font-size: 22px; color: var(--gold); margin-bottom:10px;">SCORE: <span id="scoreVal">0</span>%</div>
         <canvas id="gameCanvas"></canvas>
     </div>
 
     <div id="ad-screen" class="screen">
-        <p style="color:#aaa;">Generating Reward: <span id="timer">5</span>s</p>
+        <p style="color:#aaa;">Calculating Reward: <span id="timer">5</span>s</p>
         <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster-img">
     </div>
 
     <div id="result-screen" class="screen">
-        <h1 style="color:var(--gold); font-size:40px;">VICTORY! 🎉</h1>
-        <p id="final-msg" style="font-size:20px; font-weight:bold;"></p>
+        <h1 style="color:var(--gold); font-size:35px;">WINNER! 🎉</h1>
+        <p id="final-msg" style="font-size:18px; font-weight:bold;"></p>
         <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">GET COUPON</button>
     </div>
 
@@ -69,7 +97,7 @@
     let targetY = 100, targetDir = 1, arrowX = 80, isShooting = false;
     let playerY = 320, playerVY = 0, obsX = 400;
 
-    function showPartnerIntro() {
+    function goToIntro() {
         name = document.getElementById('custName').value;
         mobile = document.getElementById('custMobile').value;
         if (name && mobile.length === 10) {
@@ -79,17 +107,17 @@
                 document.getElementById('egg-planet-screen').classList.remove('active');
                 document.getElementById('hub-screen').classList.add('active');
             }, 5000);
-        } else { alert("Sahi details dalo!"); }
+        } else { alert("Name aur 10-digit Number bhariye!"); }
     }
 
-    function initGame(m) {
-        mode = m; score = 0;
+    function startGame(m) {
+        mode = m; score = 0; obsX = 400; playerY = 320;
         document.getElementById('hub-screen').classList.remove('active');
         document.getElementById('game-area').classList.add('active');
         canvas.style.display = 'block';
-        canvas.width = 320; canvas.height = 420;
+        canvas.width = 300; canvas.height = 400;
         gameActive = true;
-        requestAnimationFrame(update);
+        update();
     }
 
     function update() {
@@ -98,41 +126,40 @@
 
         if(mode === 'archery') {
             targetY += 4 * targetDir;
-            if(targetY > 360 || targetY < 60) targetDir *= -1;
-            for(let i=0; i<4; i++) {
-                ctx.fillStyle = i%2==0 ? '#ff3131' : '#fff';
-                ctx.beginPath(); ctx.ellipse(260, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2); ctx.fill();
+            if(targetY > 350 || targetY < 50) targetDir *= -1;
+            for(let i=0; i<3; i++) {
+                ctx.fillStyle = i%2==0 ? 'red' : 'white';
+                ctx.beginPath(); ctx.arc(250, targetY, 30-(i*8), 0, Math.PI*2); ctx.fill();
             }
-            ctx.strokeStyle = "#e3cfa8"; ctx.lineWidth = 6;
-            ctx.beginPath(); ctx.moveTo(40, 150); ctx.bezierCurveTo(90, 170, 90, 270, 40, 290); ctx.stroke();
             if(isShooting) {
                 arrowX += 20;
-                if(arrowX > 240 && Math.abs(220 - targetY) < 50) { 
+                if(arrowX > 220 && Math.abs(200 - targetY) < 40) { 
                     score += 5; arrowX = 80; isShooting = false;
                     if(score >= 10) triggerAd();
                 } else if(arrowX > 320) { arrowX = 80; isShooting = false; }
             }
-            ctx.fillStyle = "gold"; ctx.fillRect(arrowX-40, 218, 40, 4);
+            ctx.fillStyle = "gold"; ctx.fillRect(arrowX-30, 198, 30, 4);
         } 
         else if (mode === 'jump') {
             playerVY += 1; playerY += playerVY;
             if(playerY > 320) playerY = 320;
-            ctx.fillStyle = "#00f2ff"; ctx.fillRect(60, playerY, 40, 40);
-            obsX -= 7;
+            ctx.fillStyle = "#00f2ff"; ctx.fillRect(50, playerY, 35, 35);
+            obsX -= 6;
             if(obsX < -30) { obsX = 350; score += 5; if(score >= 10) triggerAd(); }
-            ctx.fillStyle = "#ff3131"; ctx.fillRect(obsX, 330, 30, 30);
-            if(obsX < 100 && obsX > 40 && playerY > 290) triggerAd();
+            ctx.fillStyle = "red"; ctx.fillRect(obsX, 325, 30, 30);
+            if(obsX < 85 && obsX > 30 && playerY > 295) triggerAd();
         }
         document.getElementById('scoreVal').innerText = score;
         requestAnimationFrame(update);
     }
 
-    window.addEventListener('mousedown', () => { handleInput(); });
-    window.addEventListener('touchstart', (e) => { e.preventDefault(); handleInput(); }, {passive: false});
-    function handleInput() {
+    window.onmousedown = (e) => { handleInp(e); };
+    window.ontouchstart = (e) => { handleInp(e); };
+
+    function handleInp(e) {
         if(!gameActive) return;
         if(mode === 'archery') isShooting = true;
-        if(mode === 'jump' && playerY === 320) playerVY = -16;
+        if(mode === 'jump' && playerY === 320) playerVY = -15;
     }
 
     function triggerAd() {
@@ -149,12 +176,12 @@
     function showFinal() {
         document.getElementById('ad-screen').classList.remove('active');
         document.getElementById('result-screen').classList.add('active');
-        document.getElementById('final-msg').innerText = `Unlocked ${score}% Discount!`;
+        document.getElementById('final-msg').innerText = `${name}, You Unlocked ${score}% OFF!`;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
     function sendWhatsApp() {
-        window.location.href = `https://wa.me/91${mobile}?text=Mera Score: ${score}% Discount!`;
+        window.location.href = `https://wa.me/91${mobile}?text=LOOPSCORE:${score}`;
     }
 </script>
 </body>
