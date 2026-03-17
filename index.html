@@ -8,69 +8,65 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
         :root { --gold: #FFD700; --dark: #02050a; --neon: #00f2ff; }
-        body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; }
+        
+        body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; padding: 0; overflow: hidden; height: 100vh; width: 100vw; }
 
-        /* Screen Management */
-        .screen { position: fixed; top:0; left:0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
+        /* Simple Screen Management */
+        .screen { position: fixed; top:0; left:0; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; }
         .active { display: flex !important; }
 
-        /* 3D Glass Box - Optimized for Touch */
+        /* Login Box - No Rotation, Pure Touch Friendly */
         .glass-box { 
-            background: rgba(255, 255, 255, 0.08); 
-            padding: 35px 25px; 
-            border-radius: 30px; 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 30px; border-radius: 25px; 
             border: 2px solid var(--gold); 
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
-            width: 85%; max-width: 350px; 
-            text-align: center;
-            pointer-events: auto; /* Ensures touch works */
+            width: 80%; max-width: 320px; text-align: center;
         }
 
-        .poster-img { width: 85%; max-width: 320px; border-radius: 15px; border: 3px solid var(--gold); box-shadow: 0 0 30px #000; }
+        .poster-img { width: 85%; max-width: 320px; border-radius: 15px; border: 3px solid var(--gold); box-shadow: 0 0 20px #000; }
 
-        /* Buttons & Hub */
         .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; }
-        .game-btn { background: rgba(255,255,255,0.05); border: 2px solid var(--neon); padding: 20px 10px; border-radius: 20px; cursor: pointer; }
+        .game-btn { background: rgba(255,255,255,0.1); border: 2px solid var(--neon); padding: 20px 10px; border-radius: 15px; cursor: pointer; text-align: center; }
 
+        /* Form Inputs */
         input { 
-            width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; 
-            background: rgba(0,0,0,0.8); color: #fff; border: 1px solid #555; 
-            font-family: 'Orbitron'; box-sizing: border-box; font-size: 14px;
+            width: 100%; padding: 15px; margin: 10px 0; border-radius: 10px; 
+            background: #000; color: #fff; border: 1px solid var(--gold); 
+            font-family: 'Orbitron'; box-sizing: border-box; font-size: 16px; 
+            display: block; position: relative; z-index: 20;
         }
 
         .btn-action { 
             width: 100%; padding: 16px; background: var(--gold); color: #000; 
-            font-weight: 900; border: none; border-radius: 12px; cursor: pointer; 
-            box-shadow: 0 6px 0 #b8860b; font-size: 16px; margin-top: 10px;
+            font-weight: 900; border: none; border-radius: 10px; cursor: pointer; 
+            font-size: 18px; margin-top: 10px; display: block; position: relative; z-index: 20;
         }
-        .btn-action:active { transform: translateY(3px); box-shadow: 0 3px 0 #b8860b; }
 
-        canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 20px; border: 2px solid #444; margin-top: 10px; }
+        canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border: 2px solid #444; border-radius: 15px; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="screen active">
         <div class="glass-box">
-            <h1 style="color: var(--gold); margin:0; font-size: 30px;">LUCK LOOP</h1>
-            <p style="font-size: 9px; letter-spacing: 2px; color: var(--neon); margin-bottom: 15px;">PREMIUM 3D HUB</p>
-            <input type="text" id="custName" placeholder="ENTER NAME">
-            <input type="tel" id="custMobile" placeholder="MOBILE NO">
-            <button class="btn-action" onclick="goToIntro()">ENTER ARENA</button>
+            <h1 style="color: var(--gold); margin:0; font-size: 28px;">LUCK LOOP</h1>
+            <p style="font-size: 10px; color: var(--neon); margin-bottom: 15px;">PREMIUM HUB</p>
+            <input type="text" id="custName" placeholder="NAME">
+            <input type="tel" id="custMobile" placeholder="MOBILE">
+            <button class="btn-action" onclick="goToIntro()">ENTER</button>
         </div>
     </div>
 
     <div id="egg-planet-screen" class="screen">
-        <h2 style="color: var(--gold); margin-bottom: 15px;">PARTNER</h2>
         <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster-img">
-        <p style="margin-top:15px; font-weight:bold; color: var(--neon);">Loading Hub...</p>
+        <p style="margin-top:15px; font-weight:bold; color: var(--neon);">Loading Arena...</p>
     </div>
 
     <div id="hub-screen" class="screen">
-        <h2 style="color: var(--gold); margin-bottom:20px;">CHOOSE GAME</h2>
+        <h2 style="color: var(--gold); margin-bottom:20px;">GAMES</h2>
         <div class="hub-grid">
-            <div class="game-btn" onclick="startGame('archery')">🏹<br><b>ARCHERY</b></div>
-            <div class="game-btn" onclick="startGame('jump')">🚀<br><b>JUMP</b></div>
+            <div class="game-btn" onclick="startGame('archery')">🏹<br>ARCHERY</div>
+            <div class="game-btn" onclick="startGame('jump')">🚀<br>JUMP</div>
         </div>
     </div>
 
@@ -80,8 +76,8 @@
     </div>
 
     <div id="ad-screen" class="screen">
-        <p style="color:#aaa;">Calculating Reward: <span id="timer">5</span>s</p>
         <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster-img">
+        <p style="color:#aaa; margin-top:10px;">Generating Coupon: <span id="timer">5</span>s</p>
     </div>
 
     <div id="result-screen" class="screen">
@@ -101,18 +97,18 @@
         name = document.getElementById('custName').value;
         mobile = document.getElementById('custMobile').value;
         if (name && mobile.length === 10) {
-            document.getElementById('login-screen').classList.remove('active');
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('egg-planet-screen').classList.add('active');
             setTimeout(() => {
                 document.getElementById('egg-planet-screen').classList.remove('active');
                 document.getElementById('hub-screen').classList.add('active');
             }, 5000);
-        } else { alert("Name aur 10-digit Number bhariye!"); }
+        } else { alert("Name aur 10-digit Mobile Number dalo!"); }
     }
 
     function startGame(m) {
         mode = m; score = 0; obsX = 400; playerY = 320;
-        document.getElementById('hub-screen').classList.remove('active');
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('game-area').classList.add('active');
         canvas.style.display = 'block';
         canvas.width = 300; canvas.height = 400;
@@ -123,14 +119,10 @@
     function update() {
         if(!gameActive) return;
         ctx.clearRect(0,0,canvas.width, canvas.height);
-
         if(mode === 'archery') {
             targetY += 4 * targetDir;
             if(targetY > 350 || targetY < 50) targetDir *= -1;
-            for(let i=0; i<3; i++) {
-                ctx.fillStyle = i%2==0 ? 'red' : 'white';
-                ctx.beginPath(); ctx.arc(250, targetY, 30-(i*8), 0, Math.PI*2); ctx.fill();
-            }
+            ctx.fillStyle = 'red'; ctx.beginPath(); ctx.arc(250, targetY, 30, 0, Math.PI*2); ctx.fill();
             if(isShooting) {
                 arrowX += 20;
                 if(arrowX > 220 && Math.abs(200 - targetY) < 40) { 
@@ -139,8 +131,7 @@
                 } else if(arrowX > 320) { arrowX = 80; isShooting = false; }
             }
             ctx.fillStyle = "gold"; ctx.fillRect(arrowX-30, 198, 30, 4);
-        } 
-        else if (mode === 'jump') {
+        } else if (mode === 'jump') {
             playerVY += 1; playerY += playerVY;
             if(playerY > 320) playerY = 320;
             ctx.fillStyle = "#00f2ff"; ctx.fillRect(50, playerY, 35, 35);
@@ -155,7 +146,6 @@
 
     window.onmousedown = (e) => { handleInp(e); };
     window.ontouchstart = (e) => { handleInp(e); };
-
     function handleInp(e) {
         if(!gameActive) return;
         if(mode === 'archery') isShooting = true;
@@ -164,7 +154,7 @@
 
     function triggerAd() {
         gameActive = false;
-        document.getElementById('game-area').classList.remove('active');
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('ad-screen').classList.add('active');
         let t = 5;
         let timer = setInterval(() => {
@@ -174,9 +164,9 @@
     }
 
     function showFinal() {
-        document.getElementById('ad-screen').classList.remove('active');
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById('result-screen').classList.add('active');
-        document.getElementById('final-msg').innerText = `${name}, You Unlocked ${score}% OFF!`;
+        document.getElementById('final-msg').innerText = `${name}, Won ${score}% OFF!`;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
