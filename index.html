@@ -9,33 +9,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
         :root { --gold: #FFD700; --dark: #02050a; --neon: #00f2ff; }
         body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; touch-action: none; }
-
         .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; background: var(--dark); }
         .active { display: flex !important; }
-
-        /* --- 3D LOGIN --- */
-        #login-screen { background: radial-gradient(circle, #0a2e1e 0%, #02050a 100%); }
-        .glass-box { 
-            background: rgba(255, 255, 255, 0.05); padding: 40px 30px; border-radius: 40px; 
-            border: 1px solid var(--gold); box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
-            width: 85%; max-width: 360px; text-align: center; backdrop-filter: blur(20px);
-        }
-
-        /* --- POSTER STYLING --- */
+        .glass-box { background: rgba(255, 255, 255, 0.05); padding: 40px 30px; border-radius: 40px; border: 1px solid var(--gold); box-shadow: 0 0 50px rgba(255, 215, 0, 0.2); width: 85%; max-width: 360px; text-align: center; backdrop-filter: blur(20px); }
         .poster-img { width: 90%; max-width: 350px; border-radius: 20px; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(0,0,0,0.9); }
-
-        /* --- HUB & GAMES --- */
         .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 90%; }
-        .game-btn { 
-            background: rgba(255,255,255,0.05); border: 2px solid var(--neon); 
-            padding: 25px 5px; border-radius: 20px; text-align:center; cursor: pointer; transition: 0.3s;
-        }
-        .game-btn:active { transform: scale(0.9); border-color: var(--gold); }
-
+        .game-btn { background: rgba(255,255,255,0.05); border: 2px solid var(--neon); padding: 25px 5px; border-radius: 20px; text-align:center; cursor: pointer; }
         .input-premium { width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; background: rgba(0,0,0,0.7); color: #fff; border: 1px solid #444; font-family: 'Orbitron'; box-sizing: border-box; }
         .btn-action { width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 #b8860b; }
-        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #b8860b; }
-
         canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 30px; border: 2px solid #444; }
     </style>
 </head>
@@ -43,7 +24,7 @@
 
     <div id="login-screen" class="screen active">
         <div class="glass-box">
-            <h1 style="color: var(--gold); text-shadow: 0 0 20px var(--gold); margin:0; font-size: 35px;">LUCK LOOP</h1>
+            <h1 style="color: var(--gold); text-shadow: 0 0 20px var(--gold); margin:0;">LUCK LOOP</h1>
             <p style="font-size: 10px; letter-spacing: 3px; color: var(--neon); margin-bottom: 20px;">ULTRA 3D HUB</p>
             <input type="text" id="custName" class="input-premium" placeholder="NAME">
             <input type="tel" id="custMobile" class="input-premium" placeholder="WHATSAPP NO">
@@ -53,45 +34,38 @@
 
     <div id="egg-planet-screen" class="screen">
         <h2 style="color: var(--gold); margin-bottom: 20px;">OUR PARTNER</h2>
-        <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster-img" alt="Egg Planet">
+        <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster-img">
         <p style="margin-top:20px; font-weight:bold; color: var(--neon);">Initializing Games...</p>
     </div>
 
     <div id="hub-screen" class="screen">
         <h2 style="color: var(--gold); margin-bottom:30px;">SELECT MISSION</h2>
         <div class="hub-grid">
-            <div class="game-btn" onclick="initGame('archery')">
-                <span style="font-size:40px;">🏹</span><br><b style="font-size: 12px;">ARCHERY MASTER</b>
-            </div>
-            <div class="game-btn" onclick="initGame('jump')">
-                <span style="font-size:40px;">🚀</span><br><b style="font-size: 12px;">NEON JUMP</b>
-            </div>
+            <div class="game-btn" onclick="initGame('archery')">🏹<br><b>ARCHERY</b></div>
+            <div class="game-btn" onclick="initGame('jump')">🚀<br><b>NEON JUMP</b></div>
         </div>
     </div>
 
     <div id="game-area" class="screen">
         <div style="font-size: 24px; color: var(--gold); margin-bottom:15px; font-weight:900;">SCORE: <span id="scoreVal">0</span>%</div>
         <canvas id="gameCanvas"></canvas>
-        <p style="margin-top:15px; color: var(--neon);">TAP TO ACTION!</p>
     </div>
 
     <div id="ad-screen" class="screen">
-        <p style="color:#aaa;">Calculating Coupon: <span id="timer">5</span>s</p>
-        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster-img" alt="Shivay Finance">
+        <p style="color:#aaa;">Generating Reward: <span id="timer">5</span>s</p>
+        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster-img">
     </div>
 
     <div id="result-screen" class="screen">
-        <h1 style="color:var(--gold); font-size:40px; text-shadow: 0 0 20px var(--gold);">VICTORY! 🎉</h1>
+        <h1 style="color:var(--gold); font-size:40px;">VICTORY! 🎉</h1>
         <p id="final-msg" style="font-size:20px; font-weight:bold;"></p>
-        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">CLAIM ON WHATSAPP</button>
+        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">GET COUPON</button>
     </div>
 
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     let name, mobile, score = 0, gameActive = false, mode = '';
-    
-    // Game Vars
     let targetY = 100, targetDir = 1, arrowX = 80, isShooting = false;
     let playerY = 320, playerVY = 0, obsX = 400;
 
@@ -105,7 +79,7 @@
                 document.getElementById('egg-planet-screen').classList.remove('active');
                 document.getElementById('hub-screen').classList.add('active');
             }, 5000);
-        } else { alert("Please Enter Full Name and 10 Digit Number!"); }
+        } else { alert("Sahi details dalo!"); }
     }
 
     function initGame(m) {
@@ -129,10 +103,8 @@
                 ctx.fillStyle = i%2==0 ? '#ff3131' : '#fff';
                 ctx.beginPath(); ctx.ellipse(260, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2); ctx.fill();
             }
-            // Bow Drawing
             ctx.strokeStyle = "#e3cfa8"; ctx.lineWidth = 6;
             ctx.beginPath(); ctx.moveTo(40, 150); ctx.bezierCurveTo(90, 170, 90, 270, 40, 290); ctx.stroke();
-
             if(isShooting) {
                 arrowX += 20;
                 if(arrowX > 240 && Math.abs(220 - targetY) < 50) { 
@@ -145,23 +117,18 @@
         else if (mode === 'jump') {
             playerVY += 1; playerY += playerVY;
             if(playerY > 320) playerY = 320;
-            ctx.fillStyle = "#00f2ff"; ctx.shadowBlur = 15; ctx.shadowColor = "#00f2ff";
-            ctx.fillRect(60, playerY, 40, 40);
-            ctx.shadowBlur = 0;
-            
+            ctx.fillStyle = "#00f2ff"; ctx.fillRect(60, playerY, 40, 40);
             obsX -= 7;
             if(obsX < -30) { obsX = 350; score += 5; if(score >= 10) triggerAd(); }
             ctx.fillStyle = "#ff3131"; ctx.fillRect(obsX, 330, 30, 30);
             if(obsX < 100 && obsX > 40 && playerY > 290) triggerAd();
         }
-
         document.getElementById('scoreVal').innerText = score;
         requestAnimationFrame(update);
     }
 
     window.addEventListener('mousedown', () => { handleInput(); });
     window.addEventListener('touchstart', (e) => { e.preventDefault(); handleInput(); }, {passive: false});
-
     function handleInput() {
         if(!gameActive) return;
         if(mode === 'archery') isShooting = true;
@@ -182,12 +149,12 @@
     function showFinal() {
         document.getElementById('ad-screen').classList.remove('active');
         document.getElementById('result-screen').classList.add('active');
-        document.getElementById('final-msg').innerText = `${name}, You Unlocked ${score}% Discount!`;
+        document.getElementById('final-msg').innerText = `Unlocked ${score}% Discount!`;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
     function sendWhatsApp() {
-        window.location.href = `https://wa.me/91${mobile}?text=Mera Luck Loop Score: ${score}% Discount!`;
+        window.location.href = `https://wa.me/91${mobile}?text=Mera Score: ${score}% Discount!`;
     }
 </script>
 </body>
