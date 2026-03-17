@@ -3,116 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Luck Loop Hub Pro | Professional Archery</title>
+    <title>Luck Loop Ultra Hub</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
-        
-        :root { --gold: #FFD700; --dark: #0a2e1e; --gold-dark: #b8860b; --neon: #00f2ff; --card-bg: #fff; }
-        body { font-family: 'Poppins', sans-serif; background: #0a2e1e; color: #fff; margin: 0; overflow: hidden; touch-action: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+        :root { --gold: #FFD700; --dark: #02050a; --neon: #00f2ff; }
+        body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; touch-action: none; }
 
-        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; background: #0a2e1e; }
+        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; background: var(--dark); }
         .active { display: flex !important; }
 
-        /* --- PROFESSIONAL 3D LOGIN --- */
-        #login-screen { background: radial-gradient(circle at center, #1a4a3a, #0a2e1e); }
-        .login-box { 
-            background: rgba(255, 255, 255, 0.1); 
-            padding: 40px; 
-            border-radius: 40px; 
-            border: 2px solid rgba(255,255,255,0.2);
-            width: 85%; max-width: 360px;
-            text-align: center;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            transform: perspective(1000px) rotateX(3deg);
+        /* --- 3D LOGIN --- */
+        #login-screen { background: radial-gradient(circle, #0a2e1e 0%, #02050a 100%); }
+        .glass-box { 
+            background: rgba(255, 255, 255, 0.05); padding: 40px 30px; border-radius: 40px; 
+            border: 1px solid var(--gold); box-shadow: 0 0 50px rgba(255, 215, 0, 0.2);
+            width: 85%; max-width: 360px; text-align: center; backdrop-filter: blur(20px);
         }
-        .logo-pro { font-size: 40px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
-        .input-premium { 
-            width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; border: 1px solid #333;
-            background: rgba(0,0,0,0.5); color: #fff; font-family: 'Poppins'; box-sizing: border-box; outline: none;
-        }
-        .btn-action { 
-            width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900;
-            border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 var(--gold-dark); font-size: 16px;
-        }
-        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 var(--gold-dark); }
 
-        /* --- PROFESSIONAL 3D AD CARDS --- */
-        .ad-card-pro { 
-            width: 80%; padding: 30px; border-radius: 30px; 
-            transform-style: preserve-3d; transform: perspective(1000px) rotateY(-8deg);
-            box-shadow: 20px 20px 50px rgba(0,0,0,0.6);
-            text-align: left;
-        }
-        .egg-card { background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%); color: #000; border: 4px solid var(--gold); }
-        .shivay-ad { background: linear-gradient(145deg, #004d40, #00241a); border: 3px solid var(--gold); color: var(--gold); }
+        /* --- POSTER STYLING --- */
+        .poster-img { width: 90%; max-width: 350px; border-radius: 20px; border: 3px solid var(--gold); box-shadow: 0 0 40px rgba(0,0,0,0.9); }
 
-        /* --- DYNAMIC HUB --- */
-        .hub-title { color: gold; font-size: 24px; margin-bottom: 30px; }
+        /* --- HUB & GAMES --- */
         .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 90%; }
         .game-btn { 
-            background: rgba(255,255,255,0.05); border: 1px solid var(--gold); 
-            padding: 25px 10px; border-radius: 20px; cursor: pointer; text-align: center;
+            background: rgba(255,255,255,0.05); border: 2px solid var(--neon); 
+            padding: 25px 5px; border-radius: 20px; text-align:center; cursor: pointer; transition: 0.3s;
         }
-        .game-btn:active { transform: scale(0.9); }
+        .game-btn:active { transform: scale(0.9); border-color: var(--gold); }
 
-        canvas { background: radial-gradient(#1a4a3a, #0a2e1e); display: none; border-radius: 30px; border: 2px solid #333; }
+        .input-premium { width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; background: rgba(0,0,0,0.7); color: #fff; border: 1px solid #444; font-family: 'Orbitron'; box-sizing: border-box; }
+        .btn-action { width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900; border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 #b8860b; }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #b8860b; }
+
+        canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 30px; border: 2px solid #444; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="screen active">
-        <div class="login-box">
-            <div class="logo-pro">LUCK LOOP</div>
-            <p style="color: #aaa; margin-bottom: 20px;">Professional Archery Hub</p>
-            <input type="text" id="custName" class="input-premium" placeholder="Enter Your Name">
-            <input type="tel" id="custMobile" class="input-premium" placeholder="WhatsApp Number">
-            <button class="btn-action" onclick="goToIntro()">START YOUR MISSION</button>
+        <div class="glass-box">
+            <h1 style="color: var(--gold); text-shadow: 0 0 20px var(--gold); margin:0; font-size: 35px;">LUCK LOOP</h1>
+            <p style="font-size: 10px; letter-spacing: 3px; color: var(--neon); margin-bottom: 20px;">ULTRA 3D HUB</p>
+            <input type="text" id="custName" class="input-premium" placeholder="NAME">
+            <input type="tel" id="custMobile" class="input-premium" placeholder="WHATSAPP NO">
+            <button class="btn-action" onclick="showPartnerIntro()">ENTER ARENA</button>
         </div>
     </div>
 
     <div id="egg-planet-screen" class="screen">
-        <div class="ad-card-pro egg-card">
-            <h1 style="font-size: 32px; margin:0; font-weight:900;">EGG PLANET</h1>
-            <p>Our Quality Partner | Fresh & Healthy Eggs</p>
-            <div style="margin-top:20px; font-weight:700; color:#d32f2f;">Loading Archery Master...</div>
-        </div>
+        <h2 style="color: var(--gold); margin-bottom: 20px;">OUR PARTNER</h2>
+        <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster-img" alt="Egg Planet">
+        <p style="margin-top:20px; font-weight:bold; color: var(--neon);">Initializing Games...</p>
     </div>
 
     <div id="hub-screen" class="screen">
-        <h2 class="hub-title">CHOOSE YOUR CHALLENGE</h2>
+        <h2 style="color: var(--gold); margin-bottom:30px;">SELECT MISSION</h2>
         <div class="hub-grid">
-            <div class="game-btn" onclick="startGame('archery')">
-                <span style="font-size:40px;">🏹</span><br><b>Archery Master</b>
+            <div class="game-btn" onclick="initGame('archery')">
+                <span style="font-size:40px;">🏹</span><br><b style="font-size: 12px;">ARCHERY MASTER</b>
             </div>
-            <div class="game-btn" onclick="startGame('jump')">
-                <span style="font-size:40px;">🚀</span><br><b>Box Jump Pro</b>
+            <div class="game-btn" onclick="initGame('jump')">
+                <span style="font-size:40px;">🚀</span><br><b style="font-size: 12px;">NEON JUMP</b>
             </div>
         </div>
     </div>
 
     <div id="game-area" class="screen">
-        <div style="font-size: 24px; color: gold; margin-bottom: 15px;">Discount: <span id="scoreVal">0</span>%</div>
+        <div style="font-size: 24px; color: var(--gold); margin-bottom:15px; font-weight:900;">SCORE: <span id="scoreVal">0</span>%</div>
         <canvas id="gameCanvas"></canvas>
-        <p>Tap To Play!</p>
+        <p style="margin-top:15px; color: var(--neon);">TAP TO ACTION!</p>
     </div>
 
     <div id="ad-screen" class="screen">
-        <p style="color:#aaa;">Wait for Coupon... <span id="timer">5</span>s</p>
-        <div class="ad-card-pro shivay-ad">
-            <h1 style="margin:0; font-weight:900;">SHIVAY FINANCE</h1>
-            <p>• Fast Loan Approval</p>
-            <p>• Lowest Interest Rate (10.5% p.a.)</p>
-            <p>• 0% Processing Fee</p>
-            <p style="background:var(--gold); color:#000; text-align:center; border-radius:5px; padding:5px; font-weight: bold;">Trusted Loan Partner</p>
-        </div>
+        <p style="color:#aaa;">Calculating Coupon: <span id="timer">5</span>s</p>
+        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster-img" alt="Shivay Finance">
     </div>
 
     <div id="result-screen" class="screen">
-        <h1 style="color:var(--gold); font-size:40px; font-weight:900;">VICTORY</h1>
-        <p id="final-msg" style="font-size:22px;"></p>
-        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">GET YOUR COUPON</button>
+        <h1 style="color:var(--gold); font-size:40px; text-shadow: 0 0 20px var(--gold);">VICTORY! 🎉</h1>
+        <p id="final-msg" style="font-size:20px; font-weight:bold;"></p>
+        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">CLAIM ON WHATSAPP</button>
     </div>
 
 <script>
@@ -120,28 +91,24 @@
     const ctx = canvas.getContext('2d');
     let name, mobile, score = 0, gameActive = false, mode = '';
     
-    // Movement Vars
+    // Game Vars
     let targetY = 100, targetDir = 1, arrowX = 80, isShooting = false;
-    let obstacleX = 340;
+    let playerY = 320, playerVY = 0, obsX = 400;
 
-    function goToIntro() {
+    function showPartnerIntro() {
         name = document.getElementById('custName').value;
         mobile = document.getElementById('custMobile').value;
-        
         if (name && mobile.length === 10) {
             document.getElementById('login-screen').classList.remove('active');
             document.getElementById('egg-planet-screen').classList.add('active');
-            
             setTimeout(() => {
                 document.getElementById('egg-planet-screen').classList.remove('active');
                 document.getElementById('hub-screen').classList.add('active');
             }, 5000);
-        } else {
-            alert("Please enter Name and 10-digit Mobile Number!");
-        }
+        } else { alert("Please Enter Full Name and 10 Digit Number!"); }
     }
 
-    function startGame(m) {
+    function initGame(m) {
         mode = m; score = 0;
         document.getElementById('hub-screen').classList.remove('active');
         document.getElementById('game-area').classList.add('active');
@@ -156,54 +123,50 @@
         ctx.clearRect(0,0,canvas.width, canvas.height);
 
         if(mode === 'archery') {
-            // Target Movement
-            targetY += 3.5 * targetDir;
+            targetY += 4 * targetDir;
             if(targetY > 360 || targetY < 60) targetDir *= -1;
-            
-            // Draw realistic 3D Layered Target
             for(let i=0; i<4; i++) {
-                ctx.fillStyle = i%2==0 ? '#d32f2f' : '#fff';
-                ctx.beginPath();
-                // Drawing ellipses for 3D perspective
-                ctx.ellipse(260, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2);
-                ctx.fill();
+                ctx.fillStyle = i%2==0 ? '#ff3131' : '#fff';
+                ctx.beginPath(); ctx.ellipse(260, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2); ctx.fill();
             }
-
-            // Drawn Bow (Gold)
-            ctx.strokeStyle = "#FFD700"; ctx.lineWidth = 5;
-            ctx.beginPath();
-            ctx.moveTo(40, 130);
-            ctx.bezierCurveTo(90, 150, 90, 310, 40, 330);
-            ctx.stroke();
+            // Bow Drawing
+            ctx.strokeStyle = "#e3cfa8"; ctx.lineWidth = 6;
+            ctx.beginPath(); ctx.moveTo(40, 150); ctx.bezierCurveTo(90, 170, 90, 270, 40, 290); ctx.stroke();
 
             if(isShooting) {
-                arrowX += 22;
-                if(arrowX > 230 && Math.abs(230 - targetY) < 50) { 
+                arrowX += 20;
+                if(arrowX > 240 && Math.abs(220 - targetY) < 50) { 
                     score += 5; arrowX = 80; isShooting = false;
-                    target.speed += 0.5;
-                    if(score >= 15) triggerAd();
+                    if(score >= 10) triggerAd();
                 } else if(arrowX > 320) { arrowX = 80; isShooting = false; }
             }
-            ctx.fillStyle = "#FFD700"; ctx.fillRect(arrowX-40, 228, 40, 4); // Arrow
+            ctx.fillStyle = "gold"; ctx.fillRect(arrowX-40, 218, 40, 4);
         } 
         else if (mode === 'jump') {
-            // Simple Jump Game logic
-            ctx.fillStyle = "gold"; ctx.fillRect(50, 300, 40, 40);
+            playerVY += 1; playerY += playerVY;
+            if(playerY > 320) playerY = 320;
+            ctx.fillStyle = "#00f2ff"; ctx.shadowBlur = 15; ctx.shadowColor = "#00f2ff";
+            ctx.fillRect(60, playerY, 40, 40);
+            ctx.shadowBlur = 0;
             
-            // Drawn Obstacle
-            ctx.fillStyle = "#d32f2f"; ctx.fillRect(obstacleX, 310, 30, 30);
-            obstacleX -= 5;
-            if(obstacleX < -30) { obstacleX = 340; score += 5; if(score>=15) triggerAd(); }
+            obsX -= 7;
+            if(obsX < -30) { obsX = 350; score += 5; if(score >= 10) triggerAd(); }
+            ctx.fillStyle = "#ff3131"; ctx.fillRect(obsX, 330, 30, 30);
+            if(obsX < 100 && obsX > 40 && playerY > 290) triggerAd();
         }
 
         document.getElementById('scoreVal').innerText = score;
         requestAnimationFrame(update);
     }
 
-    window.addEventListener('touchstart', (e) => { 
-        if(gameActive) { e.preventDefault(); isShooting = true; }
-    }, {passive: false});
-    window.addEventListener('mousedown', () => { if(gameActive) isShooting = true; });
+    window.addEventListener('mousedown', () => { handleInput(); });
+    window.addEventListener('touchstart', (e) => { e.preventDefault(); handleInput(); }, {passive: false});
+
+    function handleInput() {
+        if(!gameActive) return;
+        if(mode === 'archery') isShooting = true;
+        if(mode === 'jump' && playerY === 320) playerVY = -16;
+    }
 
     function triggerAd() {
         gameActive = false;
@@ -219,12 +182,12 @@
     function showFinal() {
         document.getElementById('ad-screen').classList.remove('active');
         document.getElementById('result-screen').classList.add('active');
-        document.getElementById('final-msg').innerText = `Congrats ${name}! You Won ${score}% Off`;
+        document.getElementById('final-msg').innerText = `${name}, You Unlocked ${score}% Discount!`;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
     function sendWhatsApp() {
-        window.location.href = `https://wa.me/91${mobile}?text=LOOPSCORE:${score}`;
+        window.location.href = `https://wa.me/91${mobile}?text=Mera Luck Loop Score: ${score}% Discount!`;
     }
 </script>
 </body>
