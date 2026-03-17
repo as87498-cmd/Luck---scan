@@ -3,109 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Luck Loop Ultra Hub</title>
+    <title>Luck Loop Hub Pro | Professional Archery</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
-        :root { --gold: #FFD700; --neon: #00f2ff; --dark: #02050a; }
-        body { font-family: 'Orbitron', sans-serif; background: var(--dark); color: #fff; margin: 0; overflow: hidden; touch-action: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&display=swap');
+        
+        :root { --gold: #FFD700; --dark: #0a2e1e; --gold-dark: #b8860b; --neon: #00f2ff; --card-bg: #fff; }
+        body { font-family: 'Poppins', sans-serif; background: #0a2e1e; color: #fff; margin: 0; overflow: hidden; touch-action: none; }
 
-        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; background: var(--dark); }
+        .screen { position: absolute; width: 100%; height: 100%; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10; background: #0a2e1e; }
         .active { display: flex !important; }
 
-        /* --- PREMIUM 3D LOGIN --- */
-        #login-screen { background: radial-gradient(circle, #0a2e1e 0%, #02050a 100%); }
-        .glass-box { 
-            background: rgba(255, 255, 255, 0.05); 
-            padding: 40px 30px; 
+        /* --- PROFESSIONAL 3D LOGIN --- */
+        #login-screen { background: radial-gradient(circle at center, #1a4a3a, #0a2e1e); }
+        .login-box { 
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 40px; 
             border-radius: 40px; 
-            border: 1px solid rgba(0, 242, 255, 0.4); 
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
+            border: 2px solid rgba(255,255,255,0.2);
             width: 85%; max-width: 360px;
             text-align: center;
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transform: perspective(1000px) rotateX(3deg);
         }
-        .logo-glow { font-size: 40px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 5px; }
+        .logo-pro { font-size: 40px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px rgba(255, 215, 0, 0.6); }
+        .input-premium { 
+            width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; border: 1px solid #333;
+            background: rgba(0,0,0,0.5); color: #fff; font-family: 'Poppins'; box-sizing: border-box; outline: none;
+        }
+        .btn-action { 
+            width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900;
+            border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 var(--gold-dark); font-size: 16px;
+        }
+        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 var(--gold-dark); }
 
-        /* --- 3D AD CARDS --- */
-        .ad-card-3d { 
+        /* --- PROFESSIONAL 3D AD CARDS --- */
+        .ad-card-pro { 
             width: 80%; padding: 30px; border-radius: 30px; 
-            transform: perspective(1000px) rotateX(10deg);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            transform-style: preserve-3d; transform: perspective(1000px) rotateY(-8deg);
+            box-shadow: 20px 20px 50px rgba(0,0,0,0.6);
+            text-align: left;
         }
         .egg-card { background: linear-gradient(135deg, #fff 0%, #e0e0e0 100%); color: #000; border: 4px solid var(--gold); }
         .shivay-ad { background: linear-gradient(145deg, #004d40, #00241a); border: 3px solid var(--gold); color: var(--gold); }
 
-        /* --- HUB & BUTTONS --- */
+        /* --- DYNAMIC HUB --- */
+        .hub-title { color: gold; font-size: 24px; margin-bottom: 30px; }
         .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 90%; }
         .game-btn { 
-            background: rgba(255,255,255,0.05); border: 1px solid var(--neon); 
-            padding: 25px 10px; border-radius: 25px; cursor: pointer; text-align:center;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--gold); 
+            padding: 25px 10px; border-radius: 20px; cursor: pointer; text-align: center;
         }
-        .input-premium { 
-            width: 100%; padding: 18px; margin: 15px 0; border-radius: 15px; border: 1px solid #333;
-            background: rgba(0,0,0,0.7); color: #fff; font-family: 'Orbitron'; box-sizing: border-box; outline: none;
-        }
-        .btn-action { 
-            width: 100%; padding: 18px; background: var(--gold); color: #000; font-weight: 900;
-            border: none; border-radius: 15px; cursor: pointer; box-shadow: 0 8px 0 #b8860b; font-size: 16px;
-        }
-        .btn-action:active { transform: translateY(4px); box-shadow: 0 4px 0 #b8860b; }
+        .game-btn:active { transform: scale(0.9); }
 
-        canvas { background: radial-gradient(#1a2e1e, #02050a); display: none; border-radius: 30px; border: 2px solid #333; }
+        canvas { background: radial-gradient(#1a4a3a, #0a2e1e); display: none; border-radius: 30px; border: 2px solid #333; }
     </style>
 </head>
 <body>
 
     <div id="login-screen" class="screen active">
-        <div class="glass-box">
-            <div class="logo-glow">LUCK LOOP</div>
-            <p style="color: var(--neon); font-size: 10px; letter-spacing: 2px; margin-bottom: 20px;">PREMIUM HUB</p>
-            <input type="text" id="custName" class="input-premium" placeholder="NAME">
-            <input type="tel" id="custMobile" class="input-premium" placeholder="WHATSAPP NO">
-            <button class="btn-action" id="enterBtn" onclick="goToIntro()">ENTER ARENA</button>
+        <div class="login-box">
+            <div class="logo-pro">LUCK LOOP</div>
+            <p style="color: #aaa; margin-bottom: 20px;">Professional Archery Hub</p>
+            <input type="text" id="custName" class="input-premium" placeholder="Enter Your Name">
+            <input type="tel" id="custMobile" class="input-premium" placeholder="WhatsApp Number">
+            <button class="btn-action" onclick="goToIntro()">START YOUR MISSION</button>
         </div>
     </div>
 
     <div id="egg-planet-screen" class="screen">
-        <div class="ad-card-3d egg-card">
-            <h1 style="font-size: 32px; margin:0;">EGG PLANET</h1>
-            <p style="font-size: 14px;">Partner | Fresh & Healthy</p>
-            <div style="margin-top:20px; font-weight:900; color:#d32f2f;">Loading Mythic Bow...</div>
+        <div class="ad-card-pro egg-card">
+            <h1 style="font-size: 32px; margin:0; font-weight:900;">EGG PLANET</h1>
+            <p>Our Quality Partner | Fresh & Healthy Eggs</p>
+            <div style="margin-top:20px; font-weight:700; color:#d32f2f;">Loading Archery Master...</div>
         </div>
     </div>
 
     <div id="hub-screen" class="screen">
-        <h2 style="color: var(--gold); margin-bottom:30px;">SELECT MISSION</h2>
+        <h2 class="hub-title">CHOOSE YOUR CHALLENGE</h2>
         <div class="hub-grid">
             <div class="game-btn" onclick="startGame('archery')">
-                <span style="font-size:40px;">🏹</span><br><b>ARCHERY</b>
+                <span style="font-size:40px;">🏹</span><br><b>Archery Master</b>
             </div>
             <div class="game-btn" onclick="startGame('jump')">
-                <span style="font-size:40px;">🚀</span><br><b>JUMP</b>
+                <span style="font-size:40px;">🚀</span><br><b>Box Jump Pro</b>
             </div>
         </div>
     </div>
 
     <div id="game-area" class="screen">
-        <div style="font-size: 24px; color: var(--gold); margin-bottom:15px;">SCORE: <span id="scoreVal">0</span></div>
+        <div style="font-size: 24px; color: gold; margin-bottom: 15px;">Discount: <span id="scoreVal">0</span>%</div>
         <canvas id="gameCanvas"></canvas>
+        <p>Tap To Play!</p>
     </div>
 
     <div id="ad-screen" class="screen">
-        <p style="color:#aaa;">GENERATING COUPON: <span id="timer">5</span>s</p>
-        <div class="ad-card-3d shivay-ad">
-            <h1 style="margin:0;">SHIVAY FINANCE</h1>
-            <p>✔ INSTANT LOANS</p>
-            <p>✔ LOWEST INTEREST</p>
-            <p style="background:var(--gold); color:#000; text-align:center; border-radius:5px; padding:5px;">TRUSTED PARTNER</p>
+        <p style="color:#aaa;">Wait for Coupon... <span id="timer">5</span>s</p>
+        <div class="ad-card-pro shivay-ad">
+            <h1 style="margin:0; font-weight:900;">SHIVAY FINANCE</h1>
+            <p>• Fast Loan Approval</p>
+            <p>• Lowest Interest Rate (10.5% p.a.)</p>
+            <p>• 0% Processing Fee</p>
+            <p style="background:var(--gold); color:#000; text-align:center; border-radius:5px; padding:5px; font-weight: bold;">Trusted Loan Partner</p>
         </div>
     </div>
 
     <div id="result-screen" class="screen">
-        <h1 style="color:var(--gold); font-size:40px;">VICTORY</h1>
+        <h1 style="color:var(--gold); font-size:40px; font-weight:900;">VICTORY</h1>
         <p id="final-msg" style="font-size:22px;"></p>
-        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">GET COUPON</button>
+        <button class="btn-action" onclick="sendWhatsApp()" style="width:80%;">GET YOUR COUPON</button>
     </div>
 
 <script>
@@ -115,13 +122,13 @@
     
     // Movement Vars
     let targetY = 100, targetDir = 1, arrowX = 80, isShooting = false;
+    let obstacleX = 340;
 
     function goToIntro() {
         name = document.getElementById('custName').value;
         mobile = document.getElementById('custMobile').value;
         
         if (name && mobile.length === 10) {
-            // Screen Switch
             document.getElementById('login-screen').classList.remove('active');
             document.getElementById('egg-planet-screen').classList.add('active');
             
@@ -139,7 +146,7 @@
         document.getElementById('hub-screen').classList.remove('active');
         document.getElementById('game-area').classList.add('active');
         canvas.style.display = 'block';
-        canvas.width = 340; canvas.height = 460;
+        canvas.width = 320; canvas.height = 420;
         gameActive = true;
         requestAnimationFrame(update);
     }
@@ -149,35 +156,50 @@
         ctx.clearRect(0,0,canvas.width, canvas.height);
 
         if(mode === 'archery') {
-            // 3D Shaded Target
-            targetY += 3 * targetDir;
-            if(targetY > 380 || targetY < 80) targetDir *= -1;
+            // Target Movement
+            targetY += 3.5 * targetDir;
+            if(targetY > 360 || targetY < 60) targetDir *= -1;
+            
+            // Draw realistic 3D Layered Target
             for(let i=0; i<4; i++) {
-                ctx.fillStyle = i%2==0 ? '#ff3131' : '#fff';
-                ctx.beginPath(); ctx.ellipse(280, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = i%2==0 ? '#d32f2f' : '#fff';
+                ctx.beginPath();
+                // Drawing ellipses for 3D perspective
+                ctx.ellipse(260, targetY, 35-(i*8), 45-(i*10), 0, 0, Math.PI*2);
+                ctx.fill();
             }
 
-            // MYTHIC CURVED BOW (Beige Gold)
-            ctx.strokeStyle = "#e3cfa8"; ctx.lineWidth = 6;
+            // Drawn Bow (Gold)
+            ctx.strokeStyle = "#FFD700"; ctx.lineWidth = 5;
             ctx.beginPath();
             ctx.moveTo(40, 130);
             ctx.bezierCurveTo(90, 150, 90, 310, 40, 330);
             ctx.stroke();
 
             if(isShooting) {
-                arrowX += 20;
-                if(arrowX > 250 && Math.abs(230 - targetY) < 50) { 
+                arrowX += 22;
+                if(arrowX > 230 && Math.abs(230 - targetY) < 50) { 
                     score += 5; arrowX = 80; isShooting = false;
-                    if(score >= 10) triggerAd();
-                } else if(arrowX > 340) { arrowX = 80; isShooting = false; }
+                    target.speed += 0.5;
+                    if(score >= 15) triggerAd();
+                } else if(arrowX > 320) { arrowX = 80; isShooting = false; }
             }
-            ctx.fillStyle = "gold"; ctx.fillRect(arrowX-40, 228, 40, 4); // Arrow
+            ctx.fillStyle = "#FFD700"; ctx.fillRect(arrowX-40, 228, 40, 4); // Arrow
+        } 
+        else if (mode === 'jump') {
+            // Simple Jump Game logic
+            ctx.fillStyle = "gold"; ctx.fillRect(50, 300, 40, 40);
+            
+            // Drawn Obstacle
+            ctx.fillStyle = "#d32f2f"; ctx.fillRect(obstacleX, 310, 30, 30);
+            obstacleX -= 5;
+            if(obstacleX < -30) { obstacleX = 340; score += 5; if(score>=15) triggerAd(); }
         }
+
         document.getElementById('scoreVal').innerText = score;
         requestAnimationFrame(update);
     }
 
-    // Input Handling
     window.addEventListener('touchstart', (e) => { 
         if(gameActive) { e.preventDefault(); isShooting = true; }
     }, {passive: false});
@@ -197,7 +219,7 @@
     function showFinal() {
         document.getElementById('ad-screen').classList.remove('active');
         document.getElementById('result-screen').classList.add('active');
-        document.getElementById('final-msg').innerText = `CONGRATS! YOU WON ${score}% OFF`;
+        document.getElementById('final-msg').innerText = `Congrats ${name}! You Won ${score}% Off`;
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     }
 
