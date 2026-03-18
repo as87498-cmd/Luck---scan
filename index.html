@@ -1,122 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Luck Loop Hub</title>
+    <title>Luck Loop Ultra Hub</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        body { margin: 0; background: #02050a; color: white; font-family: sans-serif; text-align: center; overflow: hidden; }
-        .page { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: absolute; top:0; left:0; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+        body { margin: 0; background: #02050a; color: white; font-family: 'Orbitron', sans-serif; text-align: center; overflow: hidden; touch-action: none; }
+        .page { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; z-index: 10; }
         .active { display: flex !important; }
-        .box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; border: 2px solid gold; width: 80%; }
-        input { width: 90%; padding: 15px; margin: 10px 0; border-radius: 10px; border: none; font-size: 16px; }
-        .btn { width: 95%; padding: 15px; background: gold; color: black; font-weight: bold; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; }
-        img { width: 85%; border-radius: 15px; border: 2px solid gold; margin: 10px; }
-        canvas { background: #1a2e1e; border: 2px solid #444; display: none; }
+        
+        /* Premium UI */
+        .box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 30px; border: 2px solid #FFD700; width: 85%; max-width: 350px; backdrop-filter: blur(10px); }
+        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid gold; background: #000; color: #fff; box-sizing: border-box; font-family: 'Orbitron'; }
+        .btn { width: 100%; padding: 18px; background: #FFD700; color: #000; font-weight: 900; border: none; border-radius: 12px; font-size: 18px; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 0 #b8860b; }
+        
+        .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; }
+        .game-card { background: rgba(255,255,255,0.05); border: 2px solid #00f2ff; padding: 20px 10px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        
+        img.poster { width: 90%; border-radius: 20px; border: 3px solid gold; box-shadow: 0 0 30px #000; }
+        canvas { background: radial-gradient(#1a2e1e, #02050a); border-radius: 20px; display: none; margin-top: 10px; border: 2px solid #333; }
+        
+        #score-tag { font-size: 24px; color: gold; text-shadow: 0 0 10px gold; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="p1" class="page active">
+    <div id="login" class="page active">
         <div class="box">
-            <h1 style="color:gold;">LUCK LOOP</h1>
-            <input type="text" id="n" placeholder="Aapka Naam">
-            <input type="tel" id="m" placeholder="Mobile Number">
-            <button class="btn" onclick="go2()">ENTER GAME</button>
+            <h1 style="color:gold; margin:0;">LUCK LOOP</h1>
+            <p style="font-size: 10px; color: #00f2ff; letter-spacing: 2px;">MILLIONAIRE HUB 2030</p>
+            <input type="text" id="uname" placeholder="NAME">
+            <input type="tel" id="umobile" placeholder="WHATSAPP NO">
+            <button class="btn" onclick="startFlow()">ENTER HUB</button>
         </div>
     </div>
 
-    <div id="p2" class="page">
-        <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png">
-        <p>Loading Game Hub...</p>
+    <div id="egg-ad" class="page">
+        <h2 style="color:gold;">PARTNER BRAND</h2>
+        <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster">
+        <p>Initializing Realistic Physics...</p>
     </div>
 
-    <div id="p3" class="page">
-        <h2>SELECT GAME</h2>
-        <button class="btn" onclick="start('a')" style="margin-bottom:10px;">🏹 ARCHERY</button>
-        <button class="btn" onclick="start('j')">🚀 NEON JUMP</button>
+    <div id="hub" class="page">
+        <h2 style="color:gold;">SELECT MISSION</h2>
+        <div class="hub-grid">
+            <div class="game-card" onclick="play('archery')">🏹<br>ARCHERY PRO</div>
+            <div class="game-card" onclick="play('jump')">🚀<br>NEON JUMP</div>
+            <div class="game-card" onclick="play('bottle')">🍾<br>BOTTLE SHOOT</div>
+            <div class="game-card" onclick="play('spin')">🎡<br>LUCKY SPIN</div>
+        </div>
     </div>
 
-    <div id="p4" class="page">
-        <h2 id="sc">Score: 0%</h2>
-        <canvas id="c"></canvas>
+    <div id="arena" class="page">
+        <div id="score-tag">OFF: <span id="curScore">0</span>%</div>
+        <canvas id="gameCanvas"></canvas>
+        <p style="color:#00f2ff; margin-top:10px;">TAP TO PLAY</p>
     </div>
 
-    <div id="p5" class="page">
-        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png">
-        <p>Wait... <span id="tm">5</span>s</p>
+    <div id="shivay-ad" class="page">
+        <p>Calculating Reward: <span id="timer">5</span>s</p>
+        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster">
     </div>
 
-    <div id="p6" class="page">
-        <h1 style="color:gold;">VICTORY! 🎉</h1>
-        <p id="fm"></p>
-        <button class="btn" onclick="sendWA()">GET DISCOUNT</button>
+    <div id="result" class="page">
+        <h1 style="color:gold; font-size:40px;">BOOM! 🎉</h1>
+        <p id="winMsg" style="font-size:20px;"></p>
+        <button class="btn" onclick="claimWA()">CLAIM ON WHATSAPP</button>
     </div>
 
 <script>
-    let n, mob, s=0, gA=false, mode='', ty=100, td=1, ax=50, ash=false, py=320, pvy=0, ox=350;
-    const can = document.getElementById('c'), ctx = can.getContext('2d');
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let name, mobile, score=0, active=false, mode='';
+    
+    // Images
+    const imgBow = new Image(); imgBow.src = 'bow.png';
+    const imgTarget = new Image(); imgTarget.src = 'target.png';
 
-    function go2() {
-        n = document.getElementById('n').value; mob = document.getElementById('m').value;
-        if(n && mob.length==10) {
-            show('p2');
-            setTimeout(() => show('p3'), 5000);
-        } else { alert("Details sahi dalo!"); }
+    // Game Variables
+    let ty=100, td=1, ax=60, ash=false, py=320, pvy=0, ox=350;
+
+    function startFlow() {
+        name = document.getElementById('uname').value;
+        mobile = document.getElementById('umobile').value;
+        if(name && mobile.length==10) {
+            switchPage('egg-ad');
+            setTimeout(() => switchPage('hub'), 4000);
+        } else { alert("Sahi details bhariye!"); }
     }
 
-    function show(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-    }
-
-    function start(m) {
-        mode = m; s=0; ox=350; py=320;
-        show('p4'); can.style.display='block';
-        can.width=300; can.height=400; gA=true;
-        loop();
-    }
-
-    function loop() {
-        if(!gA) return;
-        ctx.clearRect(0,0,300,400);
-        if(mode=='a') {
-            ty += 4*td; if(ty>350 || ty<50) td*=-1;
-            ctx.fillStyle='red'; ctx.beginPath(); ctx.arc(250, ty, 30, 0, 7); ctx.fill();
-            if(ash) { ax+=20; if(ax>230 && Math.abs(200-ty)<40) { s+=5; ax=50; ash=false; if(s>=10) ad(); } else if(ax>300) { ax=50; ash=false; } }
-            ctx.fillStyle='gold'; ctx.fillRect(ax, 198, 30, 4);
-        } else {
-            pvy+=1; py+=pvy; if(py>320) py=320;
-            ctx.fillStyle='#00f2ff'; ctx.fillRect(50, py, 35, 35);
-            ox-=6; if(ox<-30) { ox=350; s+=5; if(s>=10) ad(); }
-            ctx.fillStyle='red'; ctx.fillRect(ox, 330, 30, 30);
-            if(ox<85 && ox>30 && py>295) ad();
-        }
-        document.getElementById('sc').innerText = "Score: "+s+"%";
-        requestAnimationFrame(loop);
-    }
-
-    window.onmousedown = window.ontouchstart = (e) => { 
-        if(!gA) return;
-        if(mode=='a') ash=true;
-        if(mode=='j' && py==320) pvy=-15;
-    };
-
-    function ad() {
-        gA=false; show('p5');
-        let t=5; let i = setInterval(() => {
-            t--; document.getElementById('tm').innerText=t;
-            if(t<=0) { clearInterval(i); res(); }
-        }, 1000);
-    }
-
-    function res() {
-        show('p6'); document.getElementById('fm').innerText = n + ", You Won " + s + "% Off!";
-        confetti();
-    }
-
-    function sendWA() { window.location.href="https://wa.me/91"+mob+"?text=SCORE:"+s; }
-</script>
-</body>
-</html>
+    function switchPage(id) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove
