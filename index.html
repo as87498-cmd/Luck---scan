@@ -11,63 +11,63 @@
         .page { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; z-index: 10; }
         .active { display: flex !important; }
         
-        /* Premium UI */
-        .box { background: rgba(255,255,255,0.1); padding: 30px; border-radius: 30px; border: 2px solid #FFD700; width: 85%; max-width: 350px; backdrop-filter: blur(10px); }
-        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid gold; background: #000; color: #fff; box-sizing: border-box; font-family: 'Orbitron'; }
+        /* Premium Gold UI */
+        .box { background: rgba(255, 215, 0, 0.05); padding: 30px; border-radius: 30px; border: 2px solid #FFD700; width: 85%; max-width: 350px; box-shadow: 0 0 30px rgba(255,215,0,0.2); }
+        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #FFD700; background: #000; color: #fff; box-sizing: border-box; font-family: 'Orbitron'; outline: none; }
         .btn { width: 100%; padding: 18px; background: #FFD700; color: #000; font-weight: 900; border: none; border-radius: 12px; font-size: 18px; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 0 #b8860b; }
+        .btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #b8860b; }
         
         .hub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; }
-        .game-card { background: rgba(255,255,255,0.05); border: 2px solid #00f2ff; padding: 20px 10px; border-radius: 20px; font-size: 14px; font-weight: bold; }
+        .game-card { background: rgba(0, 242, 255, 0.05); border: 2px solid #00f2ff; padding: 25px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .game-card:active { transform: scale(0.9); }
         
-        img.poster { width: 90%; border-radius: 20px; border: 3px solid gold; box-shadow: 0 0 30px #000; }
-        canvas { background: radial-gradient(#1a2e1e, #02050a); border-radius: 20px; display: none; margin-top: 10px; border: 2px solid #333; }
-        
-        #score-tag { font-size: 24px; color: gold; text-shadow: 0 0 10px gold; margin-bottom: 10px; }
+        img.poster { width: 85%; border-radius: 20px; border: 3px solid #FFD700; box-shadow: 0 0 40px rgba(0,0,0,0.8); }
+        canvas { background: radial-gradient(#1a2e1e, #02050a); border-radius: 20px; display: none; border: 2px solid #333; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div id="login" class="page active">
         <div class="box">
-            <h1 style="color:gold; margin:0;">LUCK LOOP</h1>
-            <p style="font-size: 10px; color: #00f2ff; letter-spacing: 2px;">MILLIONAIRE HUB 2030</p>
+            <h1 style="color:#FFD700; margin:0; font-size: 32px; text-shadow: 0 0 15px rgba(255,215,0,0.5);">LUCK LOOP</h1>
+            <p style="font-size: 10px; color: #00f2ff; letter-spacing: 2px; margin-bottom: 20px;">MILLIONAIRE HUB 2030</p>
             <input type="text" id="uname" placeholder="NAME">
-            <input type="tel" id="umobile" placeholder="WHATSAPP NO">
+            <input type="tel" id="umobile" placeholder="MOBILE NO">
             <button class="btn" onclick="startFlow()">ENTER HUB</button>
         </div>
     </div>
 
     <div id="egg-ad" class="page">
-        <h2 style="color:gold;">PARTNER BRAND</h2>
+        <h2 style="color:#FFD700;">OUR PARTNER</h2>
         <img src="0be375d6-cfec-4bc4-a707-c3c863b278e0.png" class="poster">
-        <p>Initializing Realistic Physics...</p>
+        <p style="color:#00f2ff; margin-top:15px;">Loading realistic arena...</p>
     </div>
 
     <div id="hub" class="page">
-        <h2 style="color:gold;">SELECT MISSION</h2>
+        <h2 style="color:#FFD700; margin-bottom: 25px;">CHOOSE MISSION</h2>
         <div class="hub-grid">
-            <div class="game-card" onclick="play('archery')">🏹<br>ARCHERY PRO</div>
-            <div class="game-card" onclick="play('jump')">🚀<br>NEON JUMP</div>
-            <div class="game-card" onclick="play('bottle')">🍾<br>BOTTLE SHOOT</div>
-            <div class="game-card" onclick="play('spin')">🎡<br>LUCKY SPIN</div>
+            <div class="game-card" onclick="play('archery')">🏹<br><br>ARCHERY PRO</div>
+            <div class="game-card" onclick="play('jump')">🚀<br><br>NEON JUMP</div>
+            <div class="game-card" onclick="play('bottle')">🍾<br><br>BOTTLE HIT</div>
+            <div class="game-card" onclick="play('spin')">🎡<br><br>LUCKY WHEEL</div>
         </div>
     </div>
 
     <div id="arena" class="page">
-        <div id="score-tag">OFF: <span id="curScore">0</span>%</div>
+        <div style="font-size: 24px; color: #FFD700; margin-bottom: 10px;">SCORE: <span id="curScore">0</span>%</div>
         <canvas id="gameCanvas"></canvas>
-        <p style="color:#00f2ff; margin-top:10px;">TAP TO PLAY</p>
+        <p style="color:#00f2ff; margin-top:10px;">TAP TO SHOOT/JUMP</p>
     </div>
 
     <div id="shivay-ad" class="page">
-        <p>Calculating Reward: <span id="timer">5</span>s</p>
+        <p style="color:#aaa;">Generating Reward... <span id="timer">5</span>s</p>
         <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster">
     </div>
 
     <div id="result" class="page">
-        <h1 style="color:gold; font-size:40px;">BOOM! 🎉</h1>
-        <p id="winMsg" style="font-size:20px;"></p>
-        <button class="btn" onclick="claimWA()">CLAIM ON WHATSAPP</button>
+        <h1 style="color:#FFD700; font-size:45px;">VICTORY! 🎉</h1>
+        <p id="winMsg" style="font-size:22px; font-weight:bold;"></p>
+        <button class="btn" onclick="claimWA()" style="width:85%;">CLAIM DISCOUNT</button>
     </div>
 
 <script>
@@ -75,11 +75,11 @@
     const ctx = canvas.getContext('2d');
     let name, mobile, score=0, active=false, mode='';
     
-    // Images
+    // Game Images
     const imgBow = new Image(); imgBow.src = 'bow.png';
     const imgTarget = new Image(); imgTarget.src = 'target.png';
 
-    // Game Variables
+    // Physics Variables
     let ty=100, td=1, ax=60, ash=false, py=320, pvy=0, ox=350;
 
     function startFlow() {
@@ -88,8 +88,89 @@
         if(name && mobile.length==10) {
             switchPage('egg-ad');
             setTimeout(() => switchPage('hub'), 4000);
-        } else { alert("Sahi details bhariye!"); }
+        } else { alert("Correct details dalo bhai!"); }
     }
 
     function switchPage(id) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function play(m) {
+        mode = m; score = 0; active = true; ox = 350; py = 320;
+        switchPage('arena');
+        canvas.style.display = 'block';
+        canvas.width = 320; canvas.height = 420;
+        requestAnimationFrame(gameLoop);
+    }
+
+    function gameLoop() {
+        if(!active) return;
+        ctx.clearRect(0,0,320,420);
+
+        if(mode === 'archery') {
+            // Target Movement
+            ty += 3 * td; if(ty > 340 || ty < 60) td *= -1;
+            
+            // Draw Target (Asli Image)
+            try { ctx.drawImage(imgTarget, 240, ty-35, 60, 70); } 
+            catch(e) { ctx.fillStyle='red'; ctx.arc(260, ty, 30, 0, 7); ctx.fill(); }
+            
+            // Draw Bow (Asli Image)
+            try { ctx.drawImage(imgBow, 10, 160, 70, 100); }
+            catch(e) { ctx.fillStyle='white'; ctx.fillRect(10, 180, 10, 60); }
+
+            if(ash) {
+                ax += 18;
+                if(ax > 230 && Math.abs((160+50) - ty) < 40) {
+                    score += 5; ax = 60; ash = false;
+                    if(score >= 10) triggerAd();
+                } else if(ax > 320) { ax = 60; ash = false; }
+            }
+            // Arrow Line
+            ctx.fillStyle = '#FFD700'; ctx.fillRect(ax, 208, 40, 3);
+            ctx.fillStyle = 'red'; ctx.fillRect(ax+38, 205, 8, 8);
+        } 
+        else if (mode === 'jump') {
+            pvy += 1; py += pvy; if(py > 320) py = 320;
+            ctx.fillStyle = '#00f2ff'; ctx.shadowBlur = 10; ctx.shadowColor = '#00f2ff';
+            ctx.fillRect(50, py, 35, 35); ctx.shadowBlur = 0;
+            ox -= 7; if(ox < -40) { ox = 350; score += 5; if(score >= 10) triggerAd(); }
+            ctx.fillStyle = 'red'; ctx.fillRect(ox, 330, 30, 30);
+            if(ox < 85 && ox > 30 && py > 295) triggerAd();
+        }
+        else {
+            ctx.fillStyle = "white"; ctx.fillText("Coming Soon...", 100, 200);
+        }
+
+        document.getElementById('curScore').innerText = score;
+        requestAnimationFrame(gameLoop);
+    }
+
+    window.ontouchstart = window.onmousedown = (e) => {
+        if(!active) return;
+        if(mode === 'archery') ash = true;
+        if(mode === 'jump' && py === 320) pvy = -16;
+    };
+
+    function triggerAd() {
+        active = false; switchPage('shivay-ad');
+        let t = 5;
+        let intv = setInterval(() => {
+            t--; document.getElementById('timer').innerText = t;
+            if(t <= 0) { clearInterval(intv); showResult(); }
+        }, 1000);
+    }
+
+    function showResult() {
+        switchPage('result');
+        document.getElementById('winMsg').innerText = `${name}, You Unlocked ${score}% OFF!`;
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    }
+
+    function claimWA() {
+        window.location.href = `https://wa.me/91${mobile}?text=LOOPSCORE:${score}%20Discount%20Unlocked!`;
+    }
+</script>
+</body>
+</html>
