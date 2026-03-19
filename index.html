@@ -3,121 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Archery Master</title>
+    <title>Luck Loop Archery</title>
     <style>
-        body { margin: 0; background: #000; color: #FFD700; font-family: sans-serif; text-align: center; overflow: hidden; touch-action: none; }
+        body { margin: 0; background: #000; color: gold; font-family: sans-serif; text-align: center; overflow: hidden; touch-action: none; }
         .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; }
         .visible { display: flex !important; }
-        .input-box { border: 2px solid gold; padding: 20px; border-radius: 15px; width: 80%; background: #111; }
-        input { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid gold; background: #000; color: #fff; }
-        .go-btn { width: 95%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 10px; font-size: 20px; cursor: pointer; }
+        .box { border: 2px solid gold; padding: 20px; border-radius: 15px; width: 85%; background: #111; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid gold; background: #000; color: #fff; font-size: 16px; }
+        .btn { width: 95%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; margin-top:10px; }
         canvas { background: #001; border: 2px solid #333; width: 320px; height: 400px; margin-top: 10px; }
+        .ad-img { width: 90%; border: 3px solid gold; border-radius: 15px; box-shadow: 0 0 20px gold; }
     </style>
 </head>
 <body>
 
     <div id="s1" class="screen visible">
-        <div class="input-box">
+        <div class="box">
             <h1 style="margin:0;">LUCK LOOP</h1>
-            <p>ARCHERY CHALLENGE</p>
-            <input type="text" id="p_name" placeholder="YOUR NAME">
+            <input type="text" id="p_name" placeholder="APNA NAAM">
             <input type="tel" id="p_mob" placeholder="MOBILE NUMBER">
-            <button class="go-btn" onclick="playNow()">START MISSION</button>
+            <button class="btn" onclick="showPreAd()">START MISSION</button>
         </div>
+    </div>
+
+    <div id="s_pre" class="screen">
+        <h2 style="color:cyan;">SPONSORED BY:</h2>
+        <img src="946059d4-6c0b-426c-9411-e4070656846c.png" class="ad-img">
+        <p>Game Starting in <span id="pre_t">5</span>s...</p>
     </div>
 
     <div id="s2" class="screen">
         <h3 id="info">ARROWS: 5 | SCORE: 0</h3>
         <canvas id="c" width="320" height="400"></canvas>
-        <p>TAP ANYWHERE TO SHOOT!</p>
+        <p>TAP TO SHOOT!</p>
+    </div>
+
+    <div id="s_post" class="screen">
+        <h2 style="color:cyan;">CHECKING REWARD...</h2>
+        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="ad-img">
+        <p>Wait <span id="post_t">5</span>s for Result</p>
     </div>
 
     <div id="s3" class="screen">
-        <h1 id="winH">CONGRATS!</h1>
-        <p id="winP" style="font-size:22px;"></p>
-        <button class="go-btn" onclick="location.reload()">REPLAY</button>
+        <div class="box">
+            <h1 id="winH">JACKPOT!</h1>
+            <p id="winP" style="font-size:20px; color:white;"></p>
+            <button class="btn" onclick="location.reload()">PLAY AGAIN</button>
+        </div>
     </div>
 
 <script>
-    const s1 = document.getElementById('s1');
-    const s2 = document.getElementById('s2');
-    const s3 = document.getElementById('s3');
     const cv = document.getElementById('c');
     const ctx = cv.getContext('2d');
-
     let pName, score=0, arrows=5, playing=false;
-    let tx=160, tDir=2, ay=350, shooting=false;
+    let tx=160, tDir=2.5, ay=350, shooting=false;
 
-    // Direct Function Call
-    function playNow() {
+    // STEP 1: Show Egg Planet Ad
+    function showPreAd() {
         pName = document.getElementById('p_name').value;
-        let m = document.getElementById('p_mob').value;
-        if(pName && m.length >= 10) {
-            s1.classList.remove('visible');
-            s2.classList.add('visible');
-            playing = true;
-            gameLoop();
-        } else {
-            alert("Details sahi se bharo bhai!");
-        }
+        if(pName && document.getElementById('p_mob').value.length >= 10) {
+            document.getElementById('s1').classList.remove('visible');
+            document.getElementById('s_pre').classList.add('visible');
+            let t = 5;
+            let itv = setInterval(() => {
+                t--; document.getElementById('pre_t').innerText = t;
+                if(t <= 0) {
+                    clearInterval(itv);
+                    startMainGame();
+                }
+            }, 1000);
+        } else { alert("Pehle details bhariye bhai!"); }
+    }
+
+    // STEP 2: Start Archery
+    function startMainGame() {
+        document.getElementById('s_pre').classList.remove('visible');
+        document.getElementById('s2').classList.add('visible');
+        playing = true;
+        gameLoop();
     }
 
     function gameLoop() {
         if(!playing) return;
         ctx.clearRect(0,0,320,400);
 
-        // Target Logic
         tx += tDir;
         if(tx > 280 || tx < 40) tDir *= -1;
         
-        // Draw Target
-        ctx.beginPath(); ctx.fillStyle="red"; ctx.arc(tx, 50, 30, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.fillStyle="yellow"; ctx.arc(tx, 50, 15, 0, 7); ctx.fill();
+        // Target (Archery Style)
+        ctx.beginPath(); ctx.fillStyle="red"; ctx.arc(tx, 60, 35, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle="white"; ctx.arc(tx, 60, 20, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle="yellow"; ctx.arc(tx, 60, 8, 0, 7); ctx.fill();
 
-        // Arrow Logic
         if(shooting) {
-            ay -= 10;
-            ctx.fillStyle = "white";
-            ctx.fillRect(158, ay, 4, 30); // Arrow
-
-            // Hit!
-            if(ay < 80 && Math.abs(160 - tx) < 30) {
-                score += 10;
+            ay -= 12;
+            ctx.fillStyle = "silver";
+            ctx.fillRect(158, ay, 4, 35);
+            if(ay < 85 && Math.abs(160 - tx) < 35) {
+                let hitDist = Math.abs(160 - tx);
+                score += (35 - Math.floor(hitDist)); 
                 resetArrow();
-            } else if(ay < 0) {
-                resetArrow();
-            }
+            } else if(ay < 0) { resetArrow(); }
         } else {
-            ctx.fillStyle = "gray";
-            ctx.fillRect(158, 350, 4, 30); // Arrow ready
+            ctx.fillStyle = "gray"; ctx.fillRect(158, 350, 4, 35); 
         }
 
         document.getElementById('info').innerText = "ARROWS: " + arrows + " | SCORE: " + score;
-
         if(arrows > 0) requestAnimationFrame(gameLoop);
-        else {
-            playing = false;
-            setTimeout(showEnd, 500);
-        }
+        else { playing = false; showPostAd(); }
     }
 
-    // Input for Shoot
-    window.addEventListener('touchstart', (e) => { 
-        if(playing && !shooting && arrows > 0) shooting = true; 
-    });
-    window.addEventListener('mousedown', (e) => { 
-        if(playing && !shooting && arrows > 0) shooting = true; 
-    });
+    window.addEventListener('touchstart', () => { if(playing && !shooting && arrows > 0) shooting = true; });
+    window.addEventListener('mousedown', () => { if(playing && !shooting && arrows > 0) shooting = true; });
 
-    function resetArrow() {
-        shooting = false; ay = 350; arrows--;
-    }
+    function resetArrow() { shooting = false; ay = 350; arrows--; }
 
-    function showEnd() {
-        s2.classList.remove('visible');
-        s3.classList.add('visible');
-        document.getElementById('winP').innerText = pName + "!\nYour Discount: " + (score/2) + "% OFF";
-    }
-</script>
-</body>
-</html>
+    // STEP 3: Show Shivay Finance Ad
+    function showPostAd() {
+        document.getElementById('s2').classList.remove('visible');
