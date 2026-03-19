@@ -1,125 +1,106 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Luck Loop: Temple Runner</title>
+    <title>Luck Loop Runner</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
-        body { margin: 0; background: #02050a; color: white; font-family: 'Orbitron', sans-serif; text-align: center; overflow: hidden; touch-action: none; }
-        .page { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; z-index: 10; }
+        body { margin: 0; background: #000; color: gold; font-family: sans-serif; text-align: center; overflow: hidden; touch-action: none; }
+        .page { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; }
         .active { display: flex !important; }
-        .box { background: rgba(255, 215, 0, 0.05); padding: 30px; border-radius: 30px; border: 2px solid #FFD700; width: 85%; max-width: 350px; box-shadow: 0 0 30px rgba(255,215,0,0.2); }
-        input { width: 100%; padding: 15px; margin: 10px 0; border-radius: 12px; border: 1px solid #FFD700; background: #000; color: #fff; box-sizing: border-box; font-family: 'Orbitron'; outline: none; }
-        .btn { width: 100%; padding: 18px; background: #FFD700; color: #000; font-weight: 900; border: none; border-radius: 12px; font-size: 18px; cursor: pointer; margin-top: 10px; box-shadow: 0 5px 0 #b8860b; }
-        img.poster { width: 85%; border-radius: 20px; border: 3px solid #FFD700; }
-        canvas { background: linear-gradient(#001, #003); border-radius: 20px; display: block; border: 2px solid #333; margin: 10px auto; }
+        .box { border: 2px solid gold; padding: 20px; border-radius: 20px; width: 80%; background: rgba(255,255,0,0.05); }
+        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid gold; background: #222; color: #fff; }
+        .btn { width: 90%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; }
+        canvas { background: #001; border: 2px solid #333; display: block; margin: 10px auto; touch-action: none; }
+        img { width: 80%; border: 2px solid gold; border-radius: 15px; }
     </style>
 </head>
 <body>
 
-    <div id="login" class="page active">
+    <div id="p1" class="page active">
         <div class="box">
-            <h1 style="color:#FFD700; margin:0;">LUCK LOOP</h1>
-            <p style="color:#00f2ff; font-size:10px; letter-spacing:2px;">TEMPLE RUNNER EDITION</p>
-            <input type="text" id="uname" placeholder="NAME">
-            <input type="tel" id="umobile" placeholder="MOBILE NO">
-            <button class="btn" onclick="startFlow()">START MISSION</button>
+            <h1 style="margin:0;">LUCK LOOP</h1>
+            <p style="color:cyan;">TEMPLE RUNNER</p>
+            <input type="text" id="n" placeholder="NAME">
+            <input type="tel" id="m" placeholder="MOBILE NO">
+            <button class="btn" onclick="goP2()">START GAME</button>
         </div>
     </div>
 
-    <div id="arena" class="page">
-        <div style="font-size: 24px; color: #FFD700;">SCORE: <span id="curScore">0</span></div>
-        <canvas id="gameCanvas"></canvas>
-        <p style="color:#00f2ff;">TAP TO JUMP OVER OBSTACLES!</p>
+    <div id="p2" class="page">
+        <h2 id="sc">SCORE: 0</h2>
+        <canvas id="gv"></canvas>
+        <p style="color:cyan;">TAP TO JUMP!</p>
     </div>
 
-    <div id="shivay-ad" class="page">
-        <p>Calculating Reward... <span id="timer">5</span>s</p>
-        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="poster">
+    <div id="p3" class="page">
+        <h2>REWARD LOADING... <span id="tm">5</span>s</h2>
+        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" alt="Ad">
     </div>
 
-    <div id="result" class="page">
-        <h1 style="color:#FFD700;">WINNER! 🎉</h1>
-        <p id="winMsg"></p>
+    <div id="p4" class="page">
+        <h1 style="font-size: 40px;">WINNER! 🎉</h1>
+        <p id="resTxt"></p>
         <button class="btn" onclick="location.reload()">PLAY AGAIN</button>
     </div>
 
 <script>
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    let name, mobile, score=0, active=false;
-    let py=300, pvy=0, obstacles=[], frame=0, speed=5;
+    const cv = document.getElementById('gv');
+    const ctx = cv.getContext('2d');
+    let nm, mob, score=0, active=false;
+    let py=150, pvy=0, obs=[], frame=0, spd=4;
 
-    function startFlow() {
-        name = document.getElementById('uname').value;
-        mobile = document.getElementById('umobile').value;
-        if(name && mobile.length==10) {
-            document.getElementById('login').classList.remove('active');
-            document.getElementById('arena').classList.add('active');
-            canvas.width = 320; canvas.height = 400;
+    function goP2() {
+        nm = document.getElementById('n').value;
+        mob = document.getElementById('m').value;
+        if(nm && mob.length >= 10) {
+            document.getElementById('p1').classList.remove('active');
+            document.getElementById('p2').classList.add('active');
+            cv.width = 300; cv.height = 250;
             active = true;
-            gameLoop();
-        } else { alert("Details sahi dalo!"); }
+            loop();
+        } else { alert("Data sahi dalo bhai!"); }
     }
 
-    function gameLoop() {
+    function loop() {
         if(!active) return;
-        ctx.clearRect(0,0,320,400);
+        ctx.clearRect(0,0,300,250);
 
-        // Player Gravity
+        // Player Logic
         pvy += 0.8; py += pvy;
-        if(py > 300) { py = 300; pvy = 0; }
-
-        // Draw Runner (Neon Box)
-        ctx.fillStyle = '#00f2ff';
-        ctx.shadowBlur = 15; ctx.shadowColor = '#00f2ff';
-        ctx.fillRect(50, py, 35, 35);
-        ctx.shadowBlur = 0;
+        if(py > 180) { py = 180; pvy = 0; }
+        
+        // Draw Runner
+        ctx.fillStyle = "cyan";
+        ctx.fillRect(40, py, 30, 30);
 
         // Ground
-        ctx.fillStyle = '#333';
-        ctx.fillRect(0, 335, 320, 65);
+        ctx.fillStyle = "gold";
+        ctx.fillRect(0, 210, 300, 5);
 
         // Obstacles
-        if(frame % 80 === 0) obstacles.push({x: 350, h: 30 + Math.random()*30});
-        
-        ctx.fillStyle = '#ff0055';
-        for(let i=obstacles.length-1; i>=0; i--) {
-            obstacles[i].x -= speed;
-            ctx.fillRect(obstacles[i].x, 335 - obstacles[i].h, 25, obstacles[i].h);
+        if(frame % 70 === 0) obs.push({x:300, h:20 + Math.random()*30});
+        ctx.fillStyle = "red";
+        for(let i=obs.length-1; i>=0; i--) {
+            obs[i].x -= spd;
+            ctx.fillRect(obs[i].x, 210 - obs[i].h, 20, obs[i].h);
 
-            // Hit Detection
-            if(obstacles[i].x < 85 && obstacles[i].x > 25 && py + 35 > 335 - obstacles[i].h) {
+            // Collision
+            if(obs[i].x < 70 && obs[i].x > 20 && py + 30 > 210 - obs[i].h) {
                 active = false;
-                triggerAd();
+                showAd();
             }
-            if(obstacles[i].x < -30) { obstacles.splice(i,1); score += 5; speed += 0.1; }
+            if(obs[i].x < -20) { obs.splice(i,1); score += 5; spd += 0.1; }
         }
 
-        document.getElementById('curScore').innerText = score;
+        document.getElementById('sc').innerText = "SCORE: " + score;
         frame++;
-        requestAnimationFrame(gameLoop);
+        requestAnimationFrame(loop);
     }
 
-    window.ontouchstart = () => { if(py === 300) pvy = -14; };
+    window.onclick = window.ontouchstart = () => { if(py >= 180) pvy = -12; };
 
-    function triggerAd() {
-        document.getElementById('arena').classList.remove('active');
-        document.getElementById('shivay-ad').classList.add('active');
-        let t = 5;
-        let itv = setInterval(() => {
-            t--; document.getElementById('timer').innerText = t;
-            if(t <= 0) {
-                clearInterval(itv);
-                document.getElementById('shivay-ad').classList.remove('active');
-                document.getElementById('result').classList.add('active');
-                document.getElementById('winMsg').innerText = name + ", you got " + score + "% Discount!";
-                confetti();
-            }
-        }, 1000);
-    }
-</script>
-</body>
-</html>
+    function showAd() {
+        document.getElementById('p2').classList.remove('active');
+        document.getElementById
