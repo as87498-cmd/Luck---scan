@@ -102,4 +102,33 @@
         if(shooting) {
             ay -= 18; // Speed badha di arrow ki
             ctx.fillStyle = "#fff"; ctx.fillRect(158, ay, 4, 30);
-            if(ay < 85 && Math.abs(160 - tx) < 35) { score += (40 - Math.floor(Math.abs(160 - tx))); shooting = false; ay =
+            if(ay < 85 && Math.abs(160 - tx) < 35) { score += (40 - Math.floor(Math.abs(160 - tx))); shooting = false; ay = 330; arrows--; }
+            else if(ay < 0) { shooting = false; ay = 330; arrows--; }
+        } else { ctx.fillStyle = "gray"; ctx.fillRect(158, 330, 4, 30); }
+        
+        document.getElementById('info').innerText = "ARROWS: " + arrows + " | SCORE: " + score;
+        if(arrows > 0) requestAnimationFrame(animate);
+        else { playing = false; showShivay(); }
+    }
+
+    window.onclick = window.ontouchstart = () => { if(playing && !shooting && arrows > 0) shooting = true; };
+
+    function showShivay() {
+        document.getElementById('s2').classList.remove('visible');
+        document.getElementById('s_post').classList.add('visible');
+        let t = 5;
+        let itv = setInterval(() => {
+            t--; document.getElementById('post_t').innerText = t;
+            if(t <= 0) { clearInterval(itv); finalResult(); }
+        }, 1000);
+    }
+
+    function finalResult() {
+        document.getElementById('s_post').classList.remove('visible');
+        document.getElementById('s3').classList.add('visible');
+        let d = Math.min(Math.floor(score/6), 30);
+        document.getElementById('winP').innerText = pName + "!\nScore: " + score + "\nDiscount: " + d + "% OFF";
+    }
+</script>
+</body>
+</html>
