@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,49 +8,58 @@
         body { margin: 0; background: #000; color: gold; font-family: sans-serif; text-align: center; overflow: hidden; touch-action: none; }
         .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; z-index: 100; }
         .visible { display: flex !important; }
-        .box { border: 2px solid gold; padding: 20px; border-radius: 15px; width: 85%; background: #111; }
+        .box { border: 2px solid gold; padding: 20px; border-radius: 15px; width: 85%; background: #111; box-shadow: 0 0 20px rgba(255,215,0,0.3); }
         input { width: 90%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid gold; background: #000; color: #fff; font-size: 16px; outline: none; }
-        .btn { width: 95%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 10px; font-size: 20px; cursor: pointer; margin-top:10px; box-shadow: 0 4px 0 #886a00; }
-        canvas { background: #001; border: 2px solid #333; width: 320px; height: 380px; margin-top: 10px; border-radius: 10px; }
-        .ad-img { width: 85%; border: 3px solid gold; border-radius: 15px; margin: 10px 0; max-height: 60vh; object-fit: contain; }
+        .btn { width: 95%; padding: 15px; background: linear-gradient(gold, #b8860b); color: #000; font-weight: bold; border: none; border-radius: 10px; font-size: 20px; cursor: pointer; margin-top:10px; }
+        canvas { background: radial-gradient(#001, #000); border: 2px solid #333; width: 320px; height: 380px; margin-top: 10px; border-radius: 10px; }
+        .ad-img { width: 85%; border: 2px solid gold; border-radius: 15px; margin: 10px 0; max-height: 50vh; background: #222; }
     </style>
 </head>
 <body>
 
     <div id="s1" class="screen visible">
         <div class="box">
-            <h1 style="margin:0; font-size: 35px;">LUCK LOOP</h1>
+            <h1 style="margin:0; font-size: 30px;">LUCK LOOP</h1>
             <p style="color:cyan;">🎯 ARCHERY CHALLENGE</p>
-            <input type="text" id="p_name" placeholder="APNA NAAM">
+            <input type="text" id="p_name" placeholder="YOUR NAME">
             <input type="tel" id="p_mob" placeholder="MOBILE NUMBER">
-            <button class="btn" onclick="window.showPreAd()">START MISSION</button>
+            <button class="btn" onclick="startSequence()">START MISSION</button>
         </div>
     </div>
 
     <div id="s_pre" class="screen">
-        <h2 style="color:cyan; margin:0;">SPONSORED BY:</h2>
-        <img src="946059d4-6c0b-426c-9411-e4070656846c.png" class="ad-img" onerror="this.src='https://via.placeholder.com/300x400?text=EGG+PLANET+AD'">
-        <h3>Game Starting in <span id="pre_t">5</span>s...</h3>
+        <div class="box">
+            <h2 style="color:cyan; margin:0;">EGG PLANET</h2>
+            <div style="min-height:200px; display:flex; align-items:center; justify-content:center;">
+                <img src="946059d4-6c0b-426c-9411-e4070656846c.png" class="ad-img" onerror="this.style.display='none';">
+                <p id="alt-text-1" style="display:none;">[EGG PLANET AD LOADING...]</p>
+            </div>
+            <h3>Game Starts in <span id="pre_t">5</span>s</h3>
+        </div>
     </div>
 
     <div id="s2" class="screen">
-        <div style="background:rgba(0,0,0,0.7); width:100%; padding: 5px;">
+        <div style="background:rgba(0,0,0,0.8); width:100%; padding: 5px; border-bottom:1px solid gold;">
             <h3 id="info">ARROWS: 5 | SCORE: 0</h3>
         </div>
         <canvas id="c" width="320" height="380"></canvas>
-        <p style="color:gold; font-weight:bold;">👇 TAP ANYWHERE TO SHOOT!</p>
+        <p style="color:cyan;">👇 TAP TO SHOOT!</p>
     </div>
 
     <div id="s_post" class="screen">
-        <h2 style="color:cyan; margin:0;">CHECKING REWARD...</h2>
-        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="ad-img" onerror="this.src='https://via.placeholder.com/300x400?text=SHIVAY+FINANCE+AD'">
-        <h3>Wait <span id="post_t">5</span>s for Result</h3>
+        <div class="box">
+            <h2 style="color:cyan; margin:0;">SHIVAY FINANCE</h2>
+            <div style="min-height:200px; display:flex; align-items:center; justify-content:center;">
+                <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="ad-img" onerror="this.style.display='none';">
+            </div>
+            <h3>Wait <span id="post_t">5</span>s for Result</h3>
+        </div>
     </div>
 
     <div id="s3" class="screen">
         <div class="box">
-            <h1 style="color:gold; margin:0;">RESULT! 🎉</h1>
-            <p id="winP" style="font-size:24px; color:white; white-space: pre-line;"></p>
+            <h1 style="color:gold; margin:0;">JACKPOT!</h1>
+            <p id="winP" style="font-size:22px; color:white;"></p>
             <button class="btn" onclick="location.reload()">PLAY AGAIN</button>
         </div>
     </div>
@@ -61,63 +70,84 @@
     let pName, score=0, arrows=5, playing=false;
     let tx=160, tDir=3, ay=330, shooting=false;
 
-    // Direct Window Functions to fix "Not Starting" issue
-    window.showPreAd = function() {
+    // Isko direct function banaya taaki button turant chale
+    function startSequence() {
         pName = document.getElementById('p_name').value;
-        let pMob = document.getElementById('p_mob').value;
+        let m = document.getElementById('p_mob').value;
         
-        if(pName && pMob.length >= 10) {
-            document.getElementById('s1').classList.remove('visible');
-            document.getElementById('s_pre').classList.add('visible');
+        if(pName && m.length >= 10) {
+            document.getElementById('s1').style.display = 'none';
+            document.getElementById('s_pre').style.display = 'flex';
+            
             let t = 5;
             let itv = setInterval(() => {
                 t--; document.getElementById('pre_t').innerText = t;
                 if(t <= 0) {
                     clearInterval(itv);
-                    window.startMainGame();
+                    startGame();
                 }
             }, 1000);
-        } else {
-            alert("Bhai, Naam aur 10-digit Mobile Number zaroori hai!");
-        }
-    };
+        } else { alert("Name aur Mobile sahi dalo!"); }
+    }
 
-    window.startMainGame = function() {
-        document.getElementById('s_pre').classList.remove('visible');
-        document.getElementById('s2').classList.add('visible');
+    function startGame() {
+        document.getElementById('s_pre').style.display = 'none';
+        document.getElementById('s2').style.display = 'flex';
         playing = true;
-        gameLoop();
-    };
+        animate();
+    }
 
-    function gameLoop() {
+    function animate() {
         if(!playing) return;
         ctx.clearRect(0,0,320,380);
 
-        // Target Logic
         tx += tDir;
         if(tx > 280 || tx < 40) tDir *= -1;
         
-        // Draw Target
-        ctx.beginPath(); ctx.fillStyle="red"; ctx.arc(tx, 50, 35, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.fillStyle="white"; ctx.arc(tx, 50, 20, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.fillStyle="yellow"; ctx.arc(tx, 50, 8, 0, 7); ctx.fill();
+        // Target Circles
+        ctx.beginPath(); ctx.fillStyle="red"; ctx.arc(tx, 60, 35, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle="white"; ctx.arc(tx, 60, 20, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle="yellow"; ctx.arc(tx, 60, 8, 0, 7); ctx.fill();
 
-        // Arrow Logic
         if(shooting) {
             ay -= 15;
-            ctx.fillStyle = "white"; ctx.fillRect(158, ay, 4, 35);
+            ctx.fillStyle = "#fff"; ctx.fillRect(158, ay, 4, 30);
             if(ay < 85 && Math.abs(160 - tx) < 35) {
                 score += (40 - Math.floor(Math.abs(160 - tx))); 
-                resetArrow();
-            } else if(ay < 0) { resetArrow(); }
+                shooting = false; ay = 330; arrows--;
+            } else if(ay < 0) {
+                shooting = false; ay = 330; arrows--;
+            }
         } else {
-            ctx.fillStyle = "gray"; ctx.fillRect(158, 330, 4, 35); 
+            ctx.fillStyle = "gray"; ctx.fillRect(158, 330, 4, 30); 
         }
 
         document.getElementById('info').innerText = "ARROWS: " + arrows + " | SCORE: " + score;
-        if(arrows > 0) requestAnimationFrame(gameLoop);
-        else { playing = false; window.showPostAd(); }
+        if(arrows > 0) requestAnimationFrame(animate);
+        else { playing = false; showShivay(); }
     }
 
-    window.addEventListener('touchstart', (e) => { if(playing && !shooting && arrows > 0) shooting = true; });
-    window.addEventListener('mousedown', (e) => { if(playing && !shooting && arrows > 0) shooting = true; });
+    window.onclick = window.ontouchstart = () => { if(playing && !shooting && arrows > 0) shooting = true; };
+
+    function showShivay() {
+        document.getElementById('s2').style.display = 'none';
+        document.getElementById('s_post').style.display = 'flex';
+        let t = 5;
+        let itv = setInterval(() => {
+            t--; document.getElementById('post_t').innerText = t;
+            if(t <= 0) {
+                clearInterval(itv);
+                finalResult();
+            }
+        }, 1000);
+    }
+
+    function finalResult() {
+        document.getElementById('s_post').style.display = 'none';
+        document.getElementById('s3').style.display = 'flex';
+        let d = Math.min(Math.floor(score/6), 25);
+        document.getElementById('winP').innerText = pName + "!\nScore: " + score + "\nDiscount: " + d + "% OFF";
+    }
+</script>
+</body>
+</html>
