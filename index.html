@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Luck Loop Runner</title>
     <style>
-        body { margin: 0; background: #000; color: gold; font-family: sans-serif; text-align: center; overflow: hidden; touch-action: none; }
+        body { margin: 0; background: #000; color: gold; font-family: sans-serif; text-align: center; overflow: hidden; }
         .page { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; }
         .active { display: flex !important; }
         .box { border: 2px solid gold; padding: 20px; border-radius: 20px; width: 80%; background: #111; }
-        input { width: 85%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid gold; background: #222; color: #fff; }
+        input { width: 85%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid gold; background: #222; color: #fff; font-size: 16px; }
         .btn { width: 90%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; }
-        #gv { background: #001; border: 2px solid #333; width: 300px; height: 200px; touch-action: none; }
-        img { width: 80%; border: 2px solid gold; border-radius: 15px; }
+        canvas { background: #001; border: 2px solid #333; width: 300px; height: 200px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -20,72 +19,75 @@
     <div id="p1" class="page active">
         <div class="box">
             <h1>LUCK LOOP</h1>
-            <p style="color:cyan;">ENTER DETAILS TO PLAY</p>
-            <input type="text" id="n" placeholder="NAME">
-            <input type="tel" id="m" placeholder="MOBILE NO">
-            <button class="btn" onclick="goP2()">START GAME</button>
+            <input type="text" id="un" placeholder="NAME">
+            <input type="tel" id="um" placeholder="MOBILE NO">
+            <button class="btn" id="startBtn">START GAME</button>
         </div>
     </div>
 
     <div id="p2" class="page">
         <h2 id="sc">SCORE: 0</h2>
         <canvas id="gv" width="300" height="200"></canvas>
-        <p style="color:cyan;">TAP SCREEN TO JUMP!</p>
+        <p style="color:cyan;">TAP TO JUMP!</p>
     </div>
 
     <div id="p3" class="page">
-        <h2>REWARD LOADING... <span id="tm">5</span>s</h2>
-        <img src="https://via.placeholder.com/300x400/FFD700/000000?text=AD+POSTER+HERE" alt="Ad">
+        <h2>LOADING REWARD... <span id="tm">5</span>s</h2>
+        <div style="width:250px; height:300px; border:2px dashed gold; display:flex; align-items:center; justify-content:center;">AD POSTER</div>
     </div>
 
     <div id="p4" class="page">
         <h1>WINNER! 🎉</h1>
-        <p id="resTxt" style="font-size:20px;"></p>
-        <button class="btn" onclick="location.reload()">PLAY AGAIN</button>
+        <p id="rt" style="font-size:20px;"></p>
+        <button class="btn" onclick="location.reload()">REPLAY</button>
     </div>
 
 <script>
+    const p1 = document.getElementById('p1');
+    const p2 = document.getElementById('p2');
+    const p3 = document.getElementById('p3');
+    const p4 = document.getElementById('p4');
     const cv = document.getElementById('gv');
     const ctx = cv.getContext('2d');
-    let nm, score=0, active=false;
+
+    let name, score=0, active=false;
     let py=150, pvy=0, obs=[], frame=0;
 
-    function goP2() {
-        nm = document.getElementById('n').value;
-        let m = document.getElementById('m').value;
-        if(nm && m.length >= 10) {
-            document.getElementById('p1').classList.remove('active');
-            document.getElementById('p2').classList.add('active');
+    // Button Click Logic
+    document.getElementById('startBtn').addEventListener('click', function() {
+        name = document.getElementById('un').value;
+        let m = document.getElementById('um').value;
+        
+        if(name && m.length >= 10) {
+            p1.classList.remove('active');
+            p2.classList.add('active');
             active = true;
-            loop();
-        } else { alert("Please enter Name and 10-digit Mobile!"); }
-    }
+            requestAnimationFrame(loop);
+        } else {
+            alert("Sahi details dalo bhai!");
+        }
+    });
 
     function loop() {
         if(!active) return;
         ctx.clearRect(0,0,300,200);
 
-        // Player Jump Physics
         pvy += 0.8; py += pvy;
         if(py > 150) { py = 150; pvy = 0; }
         
-        // Draw Runner
         ctx.fillStyle = "cyan";
         ctx.fillRect(40, py, 30, 30);
 
-        // Ground Line
         ctx.fillStyle = "gold";
         ctx.fillRect(0, 180, 300, 2);
 
-        // Obstacles Generation
-        if(frame % 70 === 0) obs.push({x:300, h:20 + Math.random()*25});
+        if(frame % 75 === 0) obs.push({x:300, h:20 + Math.random()*25});
         
         ctx.fillStyle = "red";
         for(let i=obs.length-1; i>=0; i--) {
-            obs[i].x -= 4; // Constant Speed
+            obs[i].x -= 4;
             ctx.fillRect(obs[i].x, 180 - obs[i].h, 20, obs[i].h);
 
-            // Collision Detection
             if(obs[i].x < 70 && obs[i].x > 20 && py + 30 > 180 - obs[i].h) {
                 active = false;
                 showAd();
@@ -98,21 +100,21 @@
         requestAnimationFrame(loop);
     }
 
-    // Touch to Jump
-    window.addEventListener('touchstart', function() { if(py >= 150) pvy = -12; });
-    window.addEventListener('mousedown', function() { if(py >= 150) pvy = -12; });
+    // Jump Input
+    window.addEventListener('touchstart', () => { if(py >= 150) pvy = -12; });
+    window.addEventListener('mousedown', () => { if(py >= 150) pvy = -12; });
 
     function showAd() {
-        document.getElementById('p2').classList.remove('active');
-        document.getElementById('p3').classList.add('active');
+        p2.classList.remove('active');
+        p3.classList.add('active');
         let t = 5;
         let itv = setInterval(() => {
             t--; document.getElementById('tm').innerText = t;
             if(t <= 0) {
                 clearInterval(itv);
-                document.getElementById('p3').classList.remove('active');
-                document.getElementById('p4').classList.add('active');
-                document.getElementById('resTxt').innerText = nm + ", You won " + score + "% Discount!";
+                p3.classList.remove('active');
+                p4.classList.add('active');
+                document.getElementById('rt').innerText = name + ", You won " + score + "% OFF!";
             }
         }, 1000);
     }
