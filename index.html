@@ -6,48 +6,51 @@
     <title>Luck Loop Archery</title>
     <style>
         body { margin: 0; background: #000; color: gold; font-family: sans-serif; text-align: center; overflow: hidden; touch-action: none; }
-        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; }
+        .screen { display: none; height: 100vh; width: 100vw; flex-direction: column; align-items: center; justify-content: center; position: fixed; top:0; left:0; z-index: 100; }
         .visible { display: flex !important; }
         .box { border: 2px solid gold; padding: 20px; border-radius: 15px; width: 85%; background: #111; }
-        input { width: 90%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid gold; background: #000; color: #fff; font-size: 16px; }
-        .btn { width: 95%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 10px; font-size: 18px; cursor: pointer; margin-top:10px; }
-        canvas { background: #001; border: 2px solid #333; width: 320px; height: 400px; margin-top: 10px; }
-        .ad-img { width: 90%; border: 3px solid gold; border-radius: 15px; box-shadow: 0 0 20px gold; }
+        input { width: 90%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid gold; background: #000; color: #fff; font-size: 16px; outline: none; }
+        .btn { width: 95%; padding: 15px; background: gold; color: #000; font-weight: bold; border: none; border-radius: 10px; font-size: 20px; cursor: pointer; margin-top:10px; box-shadow: 0 4px 0 #886a00; }
+        canvas { background: #001; border: 2px solid #333; width: 320px; height: 380px; margin-top: 10px; border-radius: 10px; }
+        .ad-img { width: 85%; border: 3px solid gold; border-radius: 15px; margin: 10px 0; max-height: 60vh; object-fit: contain; }
     </style>
 </head>
 <body>
 
     <div id="s1" class="screen visible">
         <div class="box">
-            <h1 style="margin:0;">LUCK LOOP</h1>
+            <h1 style="margin:0; font-size: 35px;">LUCK LOOP</h1>
+            <p style="color:cyan;">🎯 ARCHERY CHALLENGE</p>
             <input type="text" id="p_name" placeholder="APNA NAAM">
             <input type="tel" id="p_mob" placeholder="MOBILE NUMBER">
-            <button class="btn" onclick="showPreAd()">START MISSION</button>
+            <button class="btn" onclick="window.showPreAd()">START MISSION</button>
         </div>
     </div>
 
     <div id="s_pre" class="screen">
-        <h2 style="color:cyan;">SPONSORED BY:</h2>
-        <img src="946059d4-6c0b-426c-9411-e4070656846c.png" class="ad-img">
-        <p>Game Starting in <span id="pre_t">5</span>s...</p>
+        <h2 style="color:cyan; margin:0;">SPONSORED BY:</h2>
+        <img src="946059d4-6c0b-426c-9411-e4070656846c.png" class="ad-img" onerror="this.src='https://via.placeholder.com/300x400?text=EGG+PLANET+AD'">
+        <h3>Game Starting in <span id="pre_t">5</span>s...</h3>
     </div>
 
     <div id="s2" class="screen">
-        <h3 id="info">ARROWS: 5 | SCORE: 0</h3>
-        <canvas id="c" width="320" height="400"></canvas>
-        <p>TAP TO SHOOT!</p>
+        <div style="background:rgba(0,0,0,0.7); width:100%; padding: 5px;">
+            <h3 id="info">ARROWS: 5 | SCORE: 0</h3>
+        </div>
+        <canvas id="c" width="320" height="380"></canvas>
+        <p style="color:gold; font-weight:bold;">👇 TAP ANYWHERE TO SHOOT!</p>
     </div>
 
     <div id="s_post" class="screen">
-        <h2 style="color:cyan;">CHECKING REWARD...</h2>
-        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="ad-img">
-        <p>Wait <span id="post_t">5</span>s for Result</p>
+        <h2 style="color:cyan; margin:0;">CHECKING REWARD...</h2>
+        <img src="00d36208-3e40-4401-bb90-a76b38fa74cf.png" class="ad-img" onerror="this.src='https://via.placeholder.com/300x400?text=SHIVAY+FINANCE+AD'">
+        <h3>Wait <span id="post_t">5</span>s for Result</h3>
     </div>
 
     <div id="s3" class="screen">
         <div class="box">
-            <h1 id="winH">JACKPOT!</h1>
-            <p id="winP" style="font-size:20px; color:white;"></p>
+            <h1 style="color:gold; margin:0;">RESULT! 🎉</h1>
+            <p id="winP" style="font-size:24px; color:white; white-space: pre-line;"></p>
             <button class="btn" onclick="location.reload()">PLAY AGAIN</button>
         </div>
     </div>
@@ -56,12 +59,14 @@
     const cv = document.getElementById('c');
     const ctx = cv.getContext('2d');
     let pName, score=0, arrows=5, playing=false;
-    let tx=160, tDir=2.5, ay=350, shooting=false;
+    let tx=160, tDir=3, ay=330, shooting=false;
 
-    // STEP 1: Show Egg Planet Ad
-    function showPreAd() {
+    // Direct Window Functions to fix "Not Starting" issue
+    window.showPreAd = function() {
         pName = document.getElementById('p_name').value;
-        if(pName && document.getElementById('p_mob').value.length >= 10) {
+        let pMob = document.getElementById('p_mob').value;
+        
+        if(pName && pMob.length >= 10) {
             document.getElementById('s1').classList.remove('visible');
             document.getElementById('s_pre').classList.add('visible');
             let t = 5;
@@ -69,55 +74,50 @@
                 t--; document.getElementById('pre_t').innerText = t;
                 if(t <= 0) {
                     clearInterval(itv);
-                    startMainGame();
+                    window.startMainGame();
                 }
             }, 1000);
-        } else { alert("Pehle details bhariye bhai!"); }
-    }
+        } else {
+            alert("Bhai, Naam aur 10-digit Mobile Number zaroori hai!");
+        }
+    };
 
-    // STEP 2: Start Archery
-    function startMainGame() {
+    window.startMainGame = function() {
         document.getElementById('s_pre').classList.remove('visible');
         document.getElementById('s2').classList.add('visible');
         playing = true;
         gameLoop();
-    }
+    };
 
     function gameLoop() {
         if(!playing) return;
-        ctx.clearRect(0,0,320,400);
+        ctx.clearRect(0,0,320,380);
 
+        // Target Logic
         tx += tDir;
         if(tx > 280 || tx < 40) tDir *= -1;
         
-        // Target (Archery Style)
-        ctx.beginPath(); ctx.fillStyle="red"; ctx.arc(tx, 60, 35, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.fillStyle="white"; ctx.arc(tx, 60, 20, 0, 7); ctx.fill();
-        ctx.beginPath(); ctx.fillStyle="yellow"; ctx.arc(tx, 60, 8, 0, 7); ctx.fill();
+        // Draw Target
+        ctx.beginPath(); ctx.fillStyle="red"; ctx.arc(tx, 50, 35, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle="white"; ctx.arc(tx, 50, 20, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.fillStyle="yellow"; ctx.arc(tx, 50, 8, 0, 7); ctx.fill();
 
+        // Arrow Logic
         if(shooting) {
-            ay -= 12;
-            ctx.fillStyle = "silver";
-            ctx.fillRect(158, ay, 4, 35);
+            ay -= 15;
+            ctx.fillStyle = "white"; ctx.fillRect(158, ay, 4, 35);
             if(ay < 85 && Math.abs(160 - tx) < 35) {
-                let hitDist = Math.abs(160 - tx);
-                score += (35 - Math.floor(hitDist)); 
+                score += (40 - Math.floor(Math.abs(160 - tx))); 
                 resetArrow();
             } else if(ay < 0) { resetArrow(); }
         } else {
-            ctx.fillStyle = "gray"; ctx.fillRect(158, 350, 4, 35); 
+            ctx.fillStyle = "gray"; ctx.fillRect(158, 330, 4, 35); 
         }
 
         document.getElementById('info').innerText = "ARROWS: " + arrows + " | SCORE: " + score;
         if(arrows > 0) requestAnimationFrame(gameLoop);
-        else { playing = false; showPostAd(); }
+        else { playing = false; window.showPostAd(); }
     }
 
-    window.addEventListener('touchstart', () => { if(playing && !shooting && arrows > 0) shooting = true; });
-    window.addEventListener('mousedown', () => { if(playing && !shooting && arrows > 0) shooting = true; });
-
-    function resetArrow() { shooting = false; ay = 350; arrows--; }
-
-    // STEP 3: Show Shivay Finance Ad
-    function showPostAd() {
-        document.getElementById('s2').classList.remove('visible');
+    window.addEventListener('touchstart', (e) => { if(playing && !shooting && arrows > 0) shooting = true; });
+    window.addEventListener('mousedown', (e) => { if(playing && !shooting && arrows > 0) shooting = true; });
